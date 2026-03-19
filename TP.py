@@ -20,6 +20,7 @@ def lugaresEstacionamiento():
     print(estacionamiento)
     print("rama manu juan")
     print("rama manu juan")
+    print("rama mauro")
 
     return(estacionamiento)
 
