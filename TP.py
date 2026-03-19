@@ -18,7 +18,9 @@ def lugaresEstacionamiento():
             fila.append(random.randint(0,1))
 
     print(estacionamiento)
-    print("rama manu")
+    print("rama manu juan")
+    print("rama manu juan")
+
     return(estacionamiento)
 
 """ASIGNAR LUGARES LIBRES Y OCUPADOS, SUMAR EL TOTAL DE LUGARES Y MOSTRAR"""
