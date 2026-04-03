@@ -1,5 +1,3 @@
-print("Este es el repo del tp")
-
 """ESTACIONAMIENTO PARKING UADE"""
 
 import random
@@ -49,3 +47,21 @@ def lugaresLibres(estacionamiento):
 
 est = lugaresEstacionamiento()
 lugaresLibres(est)
+
+
+"""MENU PRINCIPAL"""
+
+def menuPrincipal ():
+
+    matrizEstacionamiento = [
+    ["1- Registro de ingreso de Vehiculos"],
+    ["2- Visualizar el estado del estacionamiento"],
+    ["3- Identificar qué vehículo se encuentra en cada cochera"]
+    ]
+
+    print (f"BIENVENIDOS A PARKING UADE. SELECCIONE UNA OPCIÓN{matrizEstacionamiento}")
+
+    return (matrizEstacionamiento)
+
+menuPrincipal()
+    
