@@ -1,8 +1,6 @@
-"""ESTACIONAMIENTO PARKING UADE"""
-
 import random
 
-"""COMPLETAR RANDOM UNA MATRIZ PARA LOS LUGARES DEL PARKING"""
+"""Completa una matriz random con 0 y 1"""
 
 def lugaresEstacionamiento():
     estacionamiento = []
@@ -16,11 +14,13 @@ def lugaresEstacionamiento():
             
     return(estacionamiento)
 
+"""Mostrar la matriz del estacionamiento"""
+
 def mostrarEstacionamiento(estacionamiento):
     for i in range(len(estacionamiento)):
         print(estacionamiento[i])
 
-"""ASIGNAR LUGARES LIBRES Y OCUPADOS, SUMAR EL TOTAL DE LUGARES Y MOSTRAR"""
+"""Asignar lugares libres y ocupados, mostrarlos, y sumarlos para mostrar el total de lugares """
 
 def lugaresLibres(estacionamiento):
 
@@ -41,9 +41,7 @@ def lugaresLibres(estacionamiento):
     print("la cantidad de lugares libres son: ", libres)
     print("la cantidad de lugares ocupados son:", ocupados)
 
-est = lugaresEstacionamiento()
-
-"""MENU PRINCIPAL"""
+"""Muestra el menú principal"""
 
 def menuPrincipal ():
 
@@ -54,8 +52,7 @@ def menuPrincipal ():
 
     return input("Opción: ")
 
-
-"""Menú principal, basado en llamado a funciones"""
+"""Función principal, basado en llamado a funciones"""
 
 def main():
 
@@ -71,19 +68,11 @@ def main():
         elif opcion == "2":
             lugaresLibres(est)
 
-        elif opcion == "3":
-            print()
-
-        elif opcion == "4":
-            print()
-
         elif opcion == "0":
-            print (f"Confirme de nuevo pulsando 0")
+            print (f"Saliendo xd")
             break
 
         else:
             print("Opción inválida")
 
 main()
-menuPrincipal()
-    
