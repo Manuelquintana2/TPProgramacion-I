@@ -53,15 +53,43 @@ lugaresLibres(est)
 
 def menuPrincipal ():
 
-    matrizEstacionamiento = [
-    ["1- Registro de ingreso de Vehiculos"],
-    ["2- Visualizar el estado del estacionamiento"],
-    ["3- Identificar qué vehículo se encuentra en cada cochera"]
-    ]
+    print (f"BIENVENIDOS A PARKING CODE. SELECCIONE UNA OPCIÓN")
 
-    print (f"BIENVENIDOS A PARKING UADE. SELECCIONE UNA OPCIÓN{matrizEstacionamiento}")
+    print("1- Ingresar vehículo")
+    print("2- Ver estado")
+    print("3- Ver vehículos")
+    print("4- Ver estacionamiento")
+    print("0- Salir")
 
-    return (matrizEstacionamiento)
+    return input("Opción: ")
+
+def main():
+
+    while True:
+
+        opcion = menuPrincipal()
+
+        if opcion == "1":
+            print()
+
+        elif opcion == "2":
+            print()
+
+        elif opcion == "3":
+            est = lugaresEstacionamiento()
+            lugaresLibres(est)
+
+        elif opcion == "4":
+            print()
+
+        elif opcion == "0":
+            print()
+            break
+
+        else:
+            print("Opción inválida")
+
+main()
 
 menuPrincipal()
     
