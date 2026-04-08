@@ -9,19 +9,16 @@ def lugaresEstacionamiento():
 
     for i in range (4):
         fila = []
-        fila.append(random.randint(0,1))
-        estacionamiento.append(fila)
 
-        for j in range (4):
+        for j in range (5):
             fila.append(random.randint(0,1))
-
-    print(estacionamiento)
-    print("rama manu juan")
-    print("rama manu juan")
-    print("rama mauro")
-    print("rama ebra")
-
+        estacionamiento.append(fila)
+            
     return(estacionamiento)
+
+def mostrarEstacionamiento(estacionamiento):
+    for i in range(len(estacionamiento)):
+        print(estacionamiento[i])
 
 """ASIGNAR LUGARES LIBRES Y OCUPADOS, SUMAR EL TOTAL DE LUGARES Y MOSTRAR"""
 
@@ -31,15 +28,14 @@ def lugaresLibres(estacionamiento):
     ocupados = 0
 
     for i in range (len(estacionamiento)):
-        suma = 0
         for j in range (len(estacionamiento[i])):
             
             if estacionamiento[i][j] == 1:
                 libres +=1
-            if estacionamiento[i][j] == 0:
+            else:
                 ocupados +=1
             
-            suma = libres+ocupados
+    suma = libres+ocupados
 
     print("la suma total de lugares es", suma)
     print("la cantidad de lugares libres son: ", libres)
@@ -54,30 +50,31 @@ lugaresLibres(est)
 def menuPrincipal ():
 
     print (f"BIENVENIDOS A PARKING CODE. SELECCIONE UNA OPCIÓN")
-
-    print("1- Ingresar vehículo")
-    print("2- Ver estado")
-    print("3- Ver vehículos")
-    print("4- Ver estacionamiento")
+    print("1- Mostrar Estacionamiento")
+    print("2- Mostrar lugares")
     print("0- Salir")
 
     return input("Opción: ")
 
+
+"""Menú principal, basado en llamado a funciones"""
+
 def main():
+
+    est = lugaresEstacionamiento()
 
     while True:
 
         opcion = menuPrincipal()
 
         if opcion == "1":
-            print()
+            mostrarEstacionamiento(est)
 
         elif opcion == "2":
-            print()
+            lugaresLibres(est)
 
         elif opcion == "3":
-            est = lugaresEstacionamiento()
-            lugaresLibres(est)
+            print()
 
         elif opcion == "4":
             print()
@@ -90,6 +87,5 @@ def main():
             print("Opción inválida")
 
 main()
-
 menuPrincipal()
     
