@@ -42,8 +42,6 @@ def lugaresLibres(estacionamiento):
     print("la cantidad de lugares ocupados son:", ocupados)
 
 est = lugaresEstacionamiento()
-lugaresLibres(est)
-
 
 """MENU PRINCIPAL"""
 
@@ -80,7 +78,7 @@ def main():
             print()
 
         elif opcion == "0":
-            print()
+            print (f"Confirme de nuevo pulsando 0")
             break
 
         else:
