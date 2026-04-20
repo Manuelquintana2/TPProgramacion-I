@@ -20,8 +20,82 @@ def generarNumeroOrden():
     numeroOrden += 1
     return orden
 
+def elegirMetodoDeEnvio():
+    print("\nMétodos de envío:")
+    print("1 - Retiro en sucursal")
+    print("2 - Envío estándar")
+    print("3 - Envío express")
+
+    opcion = input("Seleccione una opción: ")
+
+    while opcion != "1" and opcion != "2" and opcion != "3":
+        print("Opción inválida.")
+        opcion = input("Seleccione una opción: ")
+
+    if opcion == "1":
+        return "Retiro en sucursal"
+    elif opcion == "2":
+        return "Envío estándar"
+    else:
+        return "Envío express"
+
+
 def registrarCompras():
-    pass
+    cliente = input("\nIngrese el nombre del cliente: ")
+
+    while cliente == "":
+        print("El nombre no puede estar vacío.")
+        cliente = input("Ingrese el nombre del cliente: ")
+
+    cantidadProductos = int(input("¿Cuántos productos desea cargar? "))
+
+    while cantidadProductos <= 0:
+        print("Debe ingresar al menos 1 producto.")
+        cantidadProductos = int(input("¿Cuántos productos desea cargar? "))
+
+    productos = []
+
+    for i in range(cantidadProductos):
+        print("\nProducto", i + 1)
+
+        nombreProducto = input("Nombre del producto: ")
+        while nombreProducto == "":
+            print("El nombre no puede estar vacío.")
+            nombreProducto = input("Nombre del producto: ")
+
+        cantidad = int(input("Cantidad: "))
+        while cantidad <= 0:
+            print("La cantidad debe ser mayor a 0.")
+            cantidad = int(input("Cantidad: "))
+
+        precio = float(input("Precio: "))
+        while precio <= 0:
+            print("El precio debe ser mayor a 0.")
+            precio = float(input("Precio: "))
+
+        producto = {}
+        producto["Nombre"] = nombreProducto
+        producto["Cantidad"] = cantidad
+        producto["Precio"] = precio
+
+        productos.append(producto)
+
+    metodoDeEnvio = elegirMetodoDeEnvio()
+    nroDeOrden = generarNumeroOrden()
+
+    pedido = {}
+    pedido["Cliente"] = cliente
+    pedido["Productos"] = productos
+    pedido["MetodoDeEnvio"] = metodoDeEnvio
+    pedido["NroDeOrden"] = nroDeOrden
+    pedido["Estado"] = "Pagado"
+
+    pedidos.append(pedido)
+
+    print("\nCompra registrada correctamente.")
+    print("Número de orden generado:", nroDeOrden)
+    print("Estado inicial:", pedido["Estado"])
+
 
 def gestionarEstadoDePedido():
     pass
