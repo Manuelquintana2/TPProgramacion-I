@@ -1,78 +1,62 @@
-import random
+import time
+# Descripción del sistema
+# El sistema está hecho para gestionar pedidos de un e-commerce,
+# incluyendo la carga de productos comprados, cantidades, 
+# métodos de envío y el seguimiento del estado de cada orden.
 
-"""Completa una matriz random con 0 y 1"""
+productos = []
+producto = {}
+producto["Cantidad"] = "a"
+producto["Precio"] = "a"
+producto["MetodoDeEnvio"] = "a"
+producto["NroDeOrden"] = {"Estados" : ["Pagados", "Empaquetados", "Enviados", "Reenviado"]}
 
-def lugaresEstacionamiento():
-    estacionamiento = []
+pedidos = []
+numeroOrden = 1
 
-    for i in range (4):
-        fila = []
+def generarNumeroOrden():
+    global numeroOrden
+    orden = numeroOrden
+    numeroOrden += 1
+    return orden
 
-        for j in range (5):
-            fila.append(random.randint(0,1))
-        estacionamiento.append(fila)
-            
-    return(estacionamiento)
+def registrarCompras():
+    pass
 
-"""Mostrar la matriz del estacionamiento"""
+def gestionarEstadoDePedido():
+    pass
 
-def mostrarEstacionamiento(estacionamiento):
-    for i in range(len(estacionamiento)):
-        print(estacionamiento[i])
-
-"""Asignar lugares libres y ocupados, mostrarlos, y sumarlos para mostrar el total de lugares """
-
-def lugaresLibres(estacionamiento):
-
-    libres = 0
-    ocupados = 0
-
-    for i in range (len(estacionamiento)):
-        for j in range (len(estacionamiento[i])):
-            
-            if estacionamiento[i][j] == 1:
-                libres +=1
-            else:
-                ocupados +=1
-            
-    suma = libres+ocupados
-
-    print("la suma total de lugares es", suma)
-    print("la cantidad de lugares libres son: ", libres)
-    print("la cantidad de lugares ocupados son:", ocupados)
-
-"""Muestra el menú principal"""
-
-def menuPrincipal ():
-
-    print (f"BIENVENIDOS A PARKING CODE. SELECCIONE UNA OPCIÓN")
-    print("1- Mostrar Estacionamiento")
-    print("2- Mostrar lugares")
-    print("0- Salir")
-
-    return input("Opción: ")
-
-"""Función principal, basado en llamado a funciones"""
+def consultarInformaciónHistorica():
+    pass
 
 def main():
 
-    est = lugaresEstacionamiento()
-
     while True:
+        res = int(input("¿Que operación deseas realizar?\n" \
+        "1: Registrar Compra \n" \
+        "2: Gestionar estado de pedido\n" \
+        "3: Consultar informacion Historica\n" \
+        "4: Salir\n" \
+        ))
+        match res:
+            case 1: 
+                print("Registrar compras")
+                registrarCompras()
+            case 2:
+                print("Gestionar Estado de pedido")
+                gestionarEstadoDePedido()
+            case 3:
+                print("Consultar Informacion Histrica")
+            case 4:
+                print("Saliendo...")
+                time.sleep(1)
+                break
+            case _:
+                print("Invalido")
 
-        opcion = menuPrincipal()
-
-        if opcion == "1":
-            mostrarEstacionamiento(est)
-
-        elif opcion == "2":
-            lugaresLibres(est)
-
-        elif opcion == "0":
-            print (f"Saliendo xd")
-            break
-
-        else:
-            print("Opción inválida")
+    print("Saliendo ...")
+    time.sleep(1)
 
 main()
+
+        
