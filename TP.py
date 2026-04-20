@@ -12,7 +12,7 @@ producto["MetodoDeEnvio"] = "a"
 producto["NroDeOrden"] = {"Estados" : ["Pagados", "Empaquetados", "Enviados", "Reenviado"]}
 
 pedidos = []
-numeroOrden = 1
+numeroOrden = 1000
 
 def generarNumeroOrden():
     global numeroOrden
