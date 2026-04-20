@@ -21,33 +21,33 @@ def consultarInformaciónHistorica():
     pass
 
 def main():
-    try:
-        while True:
-            res = int(input("¿Que operación deseas realizar?\n" \
-            "1: Registrar Compra \n" \
-            "2: Gestionar estado de pedido\n" \
-            "3: Consultar informacion Historica\n" \
-            "4: Salir\n" \
-            ))
-            match res:
-                case 1: 
-                    print("Registrar compras")
-                    registrarCompras()
-                case 2:
-                    print("Gestionar Estado de pedido")
-                    gestionarEstadoDePedido()
-                case 3:
-                    print("Consultar Informacion Histrica")
-                case 4:
-                    print("Saliendo...")
-                    time.sleep(1)
-                    break
-                case _:
-                    print("Invalido")
-    except KeyboardInterrupt:
-        print("Saliendo ...")
-        time.sleep(1)
-        
+
+    while True:
+        res = int(input("¿Que operación deseas realizar?\n" \
+        "1: Registrar Compra \n" \
+        "2: Gestionar estado de pedido\n" \
+        "3: Consultar informacion Historica\n" \
+        "4: Salir\n" \
+        ))
+        match res:
+            case 1: 
+                print("Registrar compras")
+                registrarCompras()
+            case 2:
+                print("Gestionar Estado de pedido")
+                gestionarEstadoDePedido()
+            case 3:
+                print("Consultar Informacion Histrica")
+            case 4:
+                print("Saliendo...")
+                time.sleep(1)
+                break
+            case _:
+                print("Invalido")
+
+    print("Saliendo ...")
+    time.sleep(1)
+
 main()
 
         
