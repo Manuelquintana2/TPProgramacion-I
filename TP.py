@@ -4,7 +4,7 @@ import re
 # El sistema está hecho para gestionar pedidos de un e-commerce,
 # incluyendo la carga de productos comprados, cantidades, 
 # métodos de envío y el seguimiento del estado de cada orden.
-
+pedidos = []
 productos_remeras = [
     {
         "id": 1,
@@ -16,7 +16,7 @@ productos_remeras = [
     },
     {
         "id": 2,
-        "Nombre": "Remera Basic Oversize",
+        "Nombre": "Remera Classic Oversize",
         "Color": "Blanco",
         "Talle": "M",
         "Precio": 8000,
@@ -48,6 +48,14 @@ productos_remeras = [
     }
 ]
 
+numeroOrden = 1000
+
+def generarNumeroOrden():
+    global numeroOrden
+    orden = numeroOrden
+    numeroOrden += 1
+    return orden
+
 def pedirDatos(mensaje, patron):
     dato = input(mensaje)
     res = validaciones(patron, dato)
@@ -61,15 +69,87 @@ def validaciones(patron,valor):
 
 def mostrarProductos():
     for i in range(len(productos_remeras)):
-        print(f'{i}: {productos_remeras[i]["Nombre"]}')
+        print(f'{i}: {productos_remeras[i]["Nombre"]} - Talle: {productos_remeras[i]["Talle"]} - Precio: {productos_remeras[i]["Precio"]}')
 
-def registrarCompras():
+def elegirMetodosDeEnvio():
+    print("\nMétodos de envío:")
+    print("1 - Retiro en sucursal")
+    print("2 - Envío estándar")
+    print("3 - Envío express")
+
+    opcion = input("Seleccione una opción: ")
+
+    while opcion != "1" and opcion != "2" and opcion != "3":
+        print("Opción inválida.")
+        opcion = input("Seleccione una opción: ")
+
+    if opcion == "1":
+        return "Retiro en sucursal"
+    elif opcion == "2":
+        return "Envío estándar"
+    else:
+        return "Envío express"
+    
+
+def registrarPedidos():
+    flag = "si"
     cliente = pedirDatos("Ingrese el nombre del cliente: ", '[a-zA-Z]')
-    mostrarProductos()
-    producto = pedirDatos("Ingrese el producto que desea comprar (Seleccione un numero)", '[0-9]')
+    cliente = cliente.upper()
+    direccion = pedirDatos("Ingrese su dirección: ", '[A-Za-z0-9]')
+    direccion = direccion.upper()
+    items = []
+    while flag == "si":
+        mostrarProductos()
+        producto = int(pedirDatos("Ingrese el producto que desea comprar (Seleccione un numero): ", '[0-9]'))
+        cantidad = int(pedirDatos("Ingrese la cantidad que desea comprar: ", '[0-9]'))
+        for i in range(len(productos_remeras)):
+            if producto == i:
+                if cantidad < productos_remeras[i]["CantidadStock"]:
+                    precioUnitario = productos_remeras[i]["Precio"]
+                    precioTotal = cantidad * productos_remeras[i]["Precio"]
+                    producto = productos_remeras[i]["Nombre"]
+                    productos_remeras[i]["CantidadStock"] = productos_remeras[i]["CantidadStock"] - cantidad
 
+        items.append({"Producto" : producto,
+                      "PrecioUnitario" : precioUnitario,
+                      "Cantidad" : cantidad,
+                      "PrecioTotal" : precioTotal
+                    })
+    
+        flag = input("¿Quiere seguir comprando?: (si/no)\n")
 
+    metodoDeEnvio = elegirMetodosDeEnvio()
 
+    pedido = {}
+    pedido["Cliente"] = cliente
+    pedido["Direccion"] = direccion
+    pedido["Items"] = items
+    pedido["NroDeOrden"] = generarNumeroOrden()
+    pedido["Estado"] = "Pagado"
+    pedido["MetodoDeEnvio"] = metodoDeEnvio
+    
+    print(f'\
+            -------Resumen de compra:--------\
+    \nCliente : {pedido["Cliente"]}\
+    \nDireccion : {pedido["Direccion"]}\
+    \nNro De Orden: {pedido["NroDeOrden"]}\
+    \nEstado: {pedido["Estado"]}\
+    \nMetodoDeEnvio : {pedido["MetodoDeEnvio"]}')
+
+    print(f"{'Producto':<20} | {'Cant.':<5} | {'Subtotal':<10}")
+    total_compra = 0
+    for item in pedido["Items"]:
+        nombre_prod = item["Producto"]
+        cant = item["Cantidad"]
+        subtotal = item["PrecioTotal"]
+        total_compra += subtotal
+        print(f"{nombre_prod:<20} | {cant:<5} | ${subtotal:>8}")
+    
+    # 3. Pie de resumen
+    print(f"{'-'*40}")
+    print(f"{'TOTAL A PAGAR:':<28} ${total_compra:>9}")
+    print(f"{'='*40}\n")
+    pedidos.append(pedido)
 
 def gestionarEstadoDePedido():
     pass
@@ -88,16 +168,14 @@ def main():
         ))
         match res:
             case 1: 
-                print("Registrar compras")
-                registrarCompras()
+                print("Registrar Pedidos")
+                registrarPedidos()
             case 2:
                 print("Gestionar Estado de pedido")
                 gestionarEstadoDePedido()
             case 3:
                 print("Consultar Informacion Histrica")
             case 4:
-                print("Saliendo...")
-                time.sleep(1)
                 break
             case _:
                 print("Invalido")
