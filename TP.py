@@ -159,6 +159,30 @@ def gestionarEstadoDePedido():
 def consultarInformaciónHistorica():
     pass
 
+def altaProducto():
+    ultimoId = len(productos_remeras)
+    prod = {}
+    prod["Id"] = ultimoId+1
+    prod["Nombre"] = pedirDatos("Ingrese el nombre del nuevo producto: ", '[a-zA-Z]')
+    prod["Color"] = pedirDatos("Ingrese el color del nuevo producto: ", '[a-zA-Z]')
+    prod["Talle"] = pedirDatos("Ingrese el talle del nuevo producto: ", '[a-zA-Z]')
+    prod["Precio"] = int(pedirDatos("Ingrese el precio del nuevo producto: ", '[0-9]'))
+    prod["CantidadStock"] = int(pedirDatos("Ingrese la cantidad de stock del nuevo producto: ", '[0-9]'))
+    productos_remeras.append(prod)
+
+    res = pedirDatos("¿Desea listar los productos? (si/no): ", '[a-zA-Z]')
+    if res == "si":
+        mostrarProductos()
+    else:
+        print("Volviendo al menu...")
+        time.sleep(1)
+
+def bajaProducto():
+    pass
+
+def modificarProducto():
+    pass
+
 def main():
 
     while True:
@@ -166,8 +190,8 @@ def main():
         "1: Registrar Compra \n" \
         "2: Gestionar estado de pedido\n" \
         "3: Consultar informacion Historica\n" \
-        "4: Dar de Alta/Baja/Modificar un producto\n"\
-        "4: Salir\n" \
+        "4: Dar de Alta/Baja o Modificar un producto\n"\
+        "5: Salir\n" \
         ))
         match res:
             case 1: 
@@ -179,6 +203,20 @@ def main():
             case 3:
                 print("Consultar Informacion Histrica")
             case 4:
+                res = int(pedirDatos("¿Que operacion desea hacer?\n" \
+                "1: Alta\n" \
+                "2: Baja\n" \
+                "3: Modificar\n",'[1-3]'))
+                match res:
+                    case 1:
+                        altaProducto()
+                    case 2:
+                        bajaProducto()
+                    case 3:
+                        modificarProducto()
+                    case _:
+                        print("Invalido")
+            case 5:
                 break
             case _:
                 print("Invalido")
