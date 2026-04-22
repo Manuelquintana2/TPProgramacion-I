@@ -178,11 +178,37 @@ def altaProducto():
         time.sleep(1)
 
 def bajaProducto():
-    pass
+    mostrarProductos()
+    res = int(pedirDatos("Ingrese el numero del producto correspondiente a la baja: ", '[0-9]'))
+    prod_eliminado = productos_remeras.pop(res)
+    print(f'El producto eliminado fue: \n\
+{prod_eliminado["Nombre"]}\n\
+Talle {prod_eliminado["Talle"]}\n\
+Color {prod_eliminado["Color"]}\n\
+Mostrando productos actuales y volviendo al menu...')
+    time.sleep(3)
+    mostrarProductos()
+
+def mostrarClaves():
+    contador = 0
+    for key in productos_remeras[0].items():
+        contador+=1
+        print(f'{contador}: {key}')
 
 def modificarProducto():
-    pass
-
+    mostrarProductos()
+    res = int(pedirDatos("Ingrese el numero del producto correspondiente a modificar: ", '[0-9]'))
+    for i in range(len(productos_remeras)):
+        if res <= len(productos_remeras):
+            if i == res:
+                contador=0
+                for key,value in productos_remeras[i].items():
+                    contador+=1
+                    print(f'{contador}: {key}')
+        else:
+            print("Fuera de rango")
+            return
+            
 def main():
 
     while True:
