@@ -36,7 +36,7 @@ productos_remeras = [
         "Color": "Azul Francia",
         "Talle": "S",
         "Precio": 13000,
-        "CantidadStock": 0
+        "CantidadStock": 15
     },
     {
         "id": 5,
@@ -110,11 +110,14 @@ def registrarPedidos():
                     producto = productos_remeras[i]["Nombre"]
                     productos_remeras[i]["CantidadStock"] = productos_remeras[i]["CantidadStock"] - cantidad
 
-        items.append({"Producto" : producto,
-                      "PrecioUnitario" : precioUnitario,
-                      "Cantidad" : cantidad,
-                      "PrecioTotal" : precioTotal
-                    })
+                    items.append({"Producto" : producto,
+                                "PrecioUnitario" : precioUnitario,
+                                "Cantidad" : cantidad,
+                                "PrecioTotal" : precioTotal
+                                })
+                else:
+                    print("No tenemos la cantidad de stock suficiente para la compra")
+
     
         flag = input("¿Quiere seguir comprando?: (si/no)\n")
 
@@ -127,7 +130,7 @@ def registrarPedidos():
     pedido["NroDeOrden"] = generarNumeroOrden()
     pedido["Estado"] = "Pagado"
     pedido["MetodoDeEnvio"] = metodoDeEnvio
-    
+
     print(f'\
             -------Resumen de compra:--------\
     \nCliente : {pedido["Cliente"]}\
@@ -136,19 +139,18 @@ def registrarPedidos():
     \nEstado: {pedido["Estado"]}\
     \nMetodoDeEnvio : {pedido["MetodoDeEnvio"]}')
 
-    print(f"{'Producto':<20} | {'Cant.':<5} | {'Subtotal':<10}")
+    print(f"{'Producto':<30} | {'Cant.':<5} | {'Subtotal':<10}")
     total_compra = 0
     for item in pedido["Items"]:
         nombre_prod = item["Producto"]
         cant = item["Cantidad"]
         subtotal = item["PrecioTotal"]
         total_compra += subtotal
-        print(f"{nombre_prod:<20} | {cant:<5} | ${subtotal:>8}")
+        print(f"{nombre_prod:<30} | {cant:<5} | ${subtotal:>8}")
     
-    # 3. Pie de resumen
-    print(f"{'-'*40}")
-    print(f"{'TOTAL A PAGAR:':<28} ${total_compra:>9}")
-    print(f"{'='*40}\n")
+    print(f"{'-'*50}")
+    print(f"{'TOTAL A PAGAR:':<28} ${total_compra:>20}")
+    print(f"{'='*50}\n")
     pedidos.append(pedido)
 
 def gestionarEstadoDePedido():
@@ -164,6 +166,7 @@ def main():
         "1: Registrar Compra \n" \
         "2: Gestionar estado de pedido\n" \
         "3: Consultar informacion Historica\n" \
+        "4: Dar de Alta/Baja/Modificar un producto\n"\
         "4: Salir\n" \
         ))
         match res:
