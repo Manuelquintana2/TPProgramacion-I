@@ -7,7 +7,7 @@ import re
 pedidos = []
 productos_remeras = [
     {
-        "id": 1,
+        "id": 0,
         "Nombre": "Remera Basic Oversize",
         "Color": "Negro",
         "Talle": "L",
@@ -15,7 +15,7 @@ productos_remeras = [
         "CantidadStock": 50
     },
     {
-        "id": 2,
+        "id": 1,
         "Nombre": "Remera Classic Oversize",
         "Color": "Blanco",
         "Talle": "M",
@@ -23,7 +23,7 @@ productos_remeras = [
         "CantidadStock": 35
     },
     {
-        "id": 3,
+        "id": 2,
         "Nombre": "Remera Estampada Rock",
         "Color": "Gris Melange",
         "Talle": "XL",
@@ -31,7 +31,7 @@ productos_remeras = [
         "CantidadStock": 15
     },
     {
-        "id": 4,
+        "id": 3,
         "Nombre": "Remera Deportiva Dry-Fit",
         "Color": "Azul Francia",
         "Talle": "S",
@@ -39,7 +39,7 @@ productos_remeras = [
         "CantidadStock": 15
     },
     {
-        "id": 5,
+        "id": 4,
         "Nombre": "Remera Polo Clásica",
         "Color": "Verde Oliva",
         "Talle": "XXL",
@@ -160,9 +160,8 @@ def consultarInformaciónHistorica():
     pass
 
 def altaProducto():
-    ultimoId = len(productos_remeras)
     prod = {}
-    prod["Id"] = ultimoId+1
+    prod["Id"] = len(productos_remeras)
     prod["Nombre"] = pedirDatos("Ingrese el nombre del nuevo producto: ", '[a-zA-Z]')
     prod["Color"] = pedirDatos("Ingrese el color del nuevo producto: ", '[a-zA-Z]')
     prod["Talle"] = pedirDatos("Ingrese el talle del nuevo producto: ", '[a-zA-Z]')
@@ -189,11 +188,6 @@ Mostrando productos actuales y volviendo al menu...')
     time.sleep(3)
     mostrarProductos()
 
-def mostrarClaves():
-    contador = 0
-    for key in productos_remeras[0].items():
-        contador+=1
-        print(f'{contador}: {key}')
 
 def modificarProducto():
     mostrarProductos()
@@ -202,13 +196,25 @@ def modificarProducto():
         if res <= len(productos_remeras):
             if i == res:
                 contador=0
-                for key,value in productos_remeras[i].items():
+                for key in productos_remeras[i].items():
                     contador+=1
                     print(f'{contador}: {key}')
         else:
             print("Fuera de rango")
             return
-            
+    clave = int(pedirDatos("Ingrese el numero correspondiente a la propiedad que quieras modificar: ", '[0-9]'))
+    contador = 0
+    for key,value in productos_remeras[res].items():
+        contador+=1
+        if clave == contador:
+            if type(value) == int:
+                nuevoValor = int(input("Ingrese el nuevo valor: "))
+                productos_remeras[res][key] = nuevoValor
+            elif type(value) == str:
+                nuevoValor = (input("Ingrese el nuevo valor: "))
+                productos_remeras[res][key] = nuevoValor
+    mostrarProductos()
+
 def main():
 
     while True:
