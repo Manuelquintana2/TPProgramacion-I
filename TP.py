@@ -106,7 +106,6 @@ def registrarCompras():
 def gestionarEstadoDePedido():
     pass
 
->>>>>>> Juan
 def consultarInformaciónHistorica():
     pass
 
