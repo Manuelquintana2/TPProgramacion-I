@@ -1,5 +1,6 @@
 import time
 import re
+
 # Descripción del sistema
 # El sistema está hecho para gestionar pedidos de un e-commerce,
 # incluyendo la carga de productos comprados, cantidades, 
@@ -52,27 +53,47 @@ productos_remeras = [
 numeroOrden = 1000
 
 def generarNumeroOrden():
+    """ 
+    Administra la variable global numeroOrden para asignar un ID único 
+    y correlativo a cada nuevo pedido.
+    """
     global numeroOrden
     orden = numeroOrden
     numeroOrden += 1
     return orden
 
 def pedirDatos(mensaje, patron):
+    """ 
+    Solicita una entrada al usuario y delega la validación 
+    de la misma mediante una expresión regular.
+    """
     dato = input(mensaje)
     res = validaciones(patron, dato)
     return res
 
 def validaciones(patron,valor):
+    """ 
+    Ejecuta un bucle de control que valida el valor ingresado contra 
+    el patrón Regex proporcionado hasta que sea correcto.
+    """
     while not(re.match(patron,valor)):
         print('No valido')
         valor = input('Ingrese nuevamente: ')
     return valor
 
 def mostrarProductos():
+    """ 
+    Itera sobre la lista de productos_remeras para imprimir 
+    el catálogo disponible en la consola.
+    """
     for i in range(len(productos_remeras)):
         print(f'{i}: {productos_remeras[i]["Nombre"]} - Talle: {productos_remeras[i]["Talle"]} - Precio: {productos_remeras[i]["Precio"]}')
 
 def elegirMetodosDeEnvio():
+    """ 
+    Muestra el menú de envío y gestiona la selección del usuario, 
+    retornando el nombre del método seleccionado.
+    """
     print("\nMétodos de envío:")
     print("1 - Retiro en sucursal")
     print("2 - Envío estándar")
@@ -90,9 +111,12 @@ def elegirMetodosDeEnvio():
         return "Envío estándar"
     else:
         return "Envío express"
-    
 
 def registrarPedidos():
+    """ 
+    Función principal de flujo de venta. Captura datos del cliente, 
+    gestiona el carrito de compras, verifica stock y almacena el pedido final.
+    """
     flag = "si"
     cliente = pedirDatos("Ingrese el nombre del cliente: ", '[a-zA-Z]')
     cliente = cliente.upper()
@@ -116,10 +140,10 @@ def registrarPedidos():
                 if cantidad < productos_remeras[i]["CantidadStock"]:
                     precioUnitario = productos_remeras[i]["Precio"]
                     precioTotal = cantidad * productos_remeras[i]["Precio"]
-                    producto = productos_remeras[i]["Nombre"]
+                    producto_nombre = productos_remeras[i]["Nombre"]
                     productos_remeras[i]["CantidadStock"] = productos_remeras[i]["CantidadStock"] - cantidad
 
-                    items.append({"Producto" : producto,
+                    items.append({"Producto" : producto_nombre,
                                 "PrecioUnitario" : precioUnitario,
                                 "Cantidad" : cantidad,
                                 "PrecioTotal" : precioTotal
@@ -127,7 +151,6 @@ def registrarPedidos():
                 else:
                     print("No tenemos la cantidad de stock suficiente para la compra")
 
-    
         flag = pedirDatos("¿Quiere seguir comprando?: (si/no)\n", '^(si|no)$')
 
     metodoDeEnvio = elegirMetodosDeEnvio()
@@ -168,6 +191,10 @@ def registrarPedidos():
     pedidos.append(pedido)
 
 def gestionarEstadoDePedido():
+    """ 
+    Busca un pedido por número de orden y permite actualizar su estado 
+    (Pagado -> Empaquetado -> Enviado -> Reenviado).
+    """
     if len(pedidos) == 0:
         print("No hay pedidos registrados.")
         return
@@ -233,6 +260,10 @@ def gestionarEstadoDePedido():
         print("El pedido tiene un estado desconocido o ya finalizó su ciclo.")
 
 def consultarInformacionHistorica():
+    """ 
+    Filtra los pedidos realizados buscando por nombre del cliente y 
+    muestra el desglose completo de sus compras.
+    """
     if len(pedidos) == 0:
         print("No hay pedidos cargados.")
         return
@@ -268,6 +299,10 @@ def consultarInformacionHistorica():
         print("-" * 50)
 
 def altaProducto():
+    """ 
+    Registra un nuevo producto en el catálogo solicitando sus atributos 
+    e incrementando el tamaño de productos_remeras.
+    """
     prod = {}
     prod["Id"] = len(productos_remeras)
     prod["Nombre"] = pedirDatos("Ingrese el nombre del nuevo producto: ", '[a-zA-Z]')
@@ -285,6 +320,10 @@ def altaProducto():
         time.sleep(1)
 
 def bajaProducto():
+    """ 
+    Elimina un producto del catálogo mediante su índice y 
+    muestra un resumen del objeto borrado.
+    """
     mostrarProductos()
     res = int(pedirDatos("Ingrese el numero del producto correspondiente a la baja: ", '[0-9]'))
     prod_eliminado = productos_remeras.pop(res)
@@ -297,6 +336,10 @@ Mostrando productos actuales y volviendo al menu...')
     mostrarProductos()
 
 def modificarProducto():
+    """ 
+    Permite editar campos específicos (Nombre, Precio, Stock, etc.) 
+    de un producto existente seleccionado por índice.
+    """
     mostrarProductos()
     res = int(pedirDatos("Ingrese el numero del producto correspondiente a modificar: ", '[0-9]'))
     for i in range(len(productos_remeras)):
@@ -325,7 +368,10 @@ def modificarProducto():
 
 """El main solamente trabaja llamando a funciones"""
 def main():
-
+    """ 
+    Bucle principal que despliega el menú e invoca las 
+    funcionalidades según la elección del usuario.
+    """
     while True:
 
         res = pedirDatos(
