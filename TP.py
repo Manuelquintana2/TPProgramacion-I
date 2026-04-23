@@ -1,10 +1,21 @@
 import time
 import re
+<<<<<<< HEAD
+=======
+
+"""Importamos bibliotecas de tiempo y re para trabajar con expresiones regulares"""
+
+>>>>>>> Juan
 # Descripción del sistema
 # El sistema está hecho para gestionar pedidos de un e-commerce,
 # incluyendo la carga de productos comprados, cantidades, 
 # métodos de envío y el seguimiento del estado de cada orden.
+<<<<<<< HEAD
 pedidos = []
+=======
+
+pedidos = [] 
+>>>>>>> Juan
 productos_remeras = [
     {
         "id": 0,
@@ -98,6 +109,7 @@ def registrarPedidos():
     direccion = pedirDatos("Ingrese su dirección: ", '[A-Za-z0-9]')
     direccion = direccion.upper()
     items = []
+<<<<<<< HEAD
     while flag == "si":
         mostrarProductos()
         producto = int(pedirDatos("Ingrese el producto que desea comprar (Seleccione un numero): ", '[0-9]'))
@@ -121,6 +133,39 @@ def registrarPedidos():
     
         flag = input("¿Quiere seguir comprando?: (si/no)\n")
 
+=======
+
+    while flag == "si":
+        mostrarProductos()
+
+        producto = int(pedirDatos("Ingrese el producto que desea comprar (Seleccione un numero): ", '^[0-9]+$'))
+
+        while producto < 0 or producto >= len(productos_remeras):
+            print("Opción inválida")
+            producto = int(pedirDatos("Ingrese el producto que desea comprar (Seleccione un numero): ", '^[0-9]+$'))
+
+        cantidad = int(pedirDatos("Ingrese la cantidad que desea comprar: ", '^[0-9]+$'))
+
+        for i in range(len(productos_remeras)):
+            if producto == i:
+                if cantidad < productos_remeras[i]["CantidadStock"]:
+                    precioUnitario = productos_remeras[i]["Precio"]
+                    precioTotal = cantidad * productos_remeras[i]["Precio"]
+                    producto = productos_remeras[i]["Nombre"]
+                    productos_remeras[i]["CantidadStock"] = productos_remeras[i]["CantidadStock"] - cantidad
+
+                    items.append({"Producto" : producto,
+                                "PrecioUnitario" : precioUnitario,
+                                "Cantidad" : cantidad,
+                                "PrecioTotal" : precioTotal
+                                })
+                else:
+                    print("No tenemos la cantidad de stock suficiente para la compra")
+
+    
+        flag = pedirDatos("¿Quiere seguir comprando?: (si/no)\n", '^(si|no)$')
+
+>>>>>>> Juan
     metodoDeEnvio = elegirMetodosDeEnvio()
 
     pedido = {}
@@ -157,7 +202,91 @@ def gestionarEstadoDePedido():
     pass
 
 def consultarInformaciónHistorica():
-    pass
+    if len(pedidos) == 0:
+        print("No hay pedidos cargados.")
+        return
+
+    clienteBuscado = pedirDatos("Ingrese el nombre del cliente a buscar: ", '[a-zA-Z]+')
+    clienteBuscado = clienteBuscado.upper()
+
+    pedidosCliente = list(filter(lambda pedido: pedido["Cliente"] == clienteBuscado, pedidos))
+
+    if len(pedidosCliente) == 0:
+        print("No se encontraron pedidos para ese cliente.")
+        return
+
+    print(f"\nPedidos encontrados para {clienteBuscado}:\n")
+
+    for pedido in pedidosCliente:
+        print(f"Nro de Orden: {pedido['NroDeOrden']}")
+        print(f"Dirección: {pedido['Direccion']}")
+        print(f"Estado: {pedido['Estado']}")
+        print(f"Método de envío: {pedido['MetodoDeEnvio']}")
+        print("Items:")
+
+        for item in pedido["Items"]:
+            print(f" - {item['Producto']} | Cantidad: {item['Cantidad']} | Subtotal: ${item['PrecioTotal']}")
+
+        print("-" * 50)
+
+def altaProducto():
+    prod = {}
+    prod["Id"] = len(productos_remeras)
+    prod["Nombre"] = pedirDatos("Ingrese el nombre del nuevo producto: ", '[a-zA-Z]')
+    prod["Color"] = pedirDatos("Ingrese el color del nuevo producto: ", '[a-zA-Z]')
+    prod["Talle"] = pedirDatos("Ingrese el talle del nuevo producto: ", '[a-zA-Z]')
+    prod["Precio"] = int(pedirDatos("Ingrese el precio del nuevo producto: ", '[0-9]'))
+    prod["CantidadStock"] = int(pedirDatos("Ingrese la cantidad de stock del nuevo producto: ", '[0-9]'))
+    productos_remeras.append(prod)
+
+    res = pedirDatos("¿Desea listar los productos? (si/no): ", '[a-zA-Z]')
+    if res == "si":
+        mostrarProductos()
+    else:
+        print("Volviendo al menu...")
+        time.sleep(1)
+
+def bajaProducto():
+    mostrarProductos()
+    res = int(pedirDatos("Ingrese el numero del producto correspondiente a la baja: ", '[0-9]'))
+    prod_eliminado = productos_remeras.pop(res)
+    print(f'El producto eliminado fue: \n\
+{prod_eliminado["Nombre"]}\n\
+Talle {prod_eliminado["Talle"]}\n\
+Color {prod_eliminado["Color"]}\n\
+Mostrando productos actuales y volviendo al menu...')
+    time.sleep(3)
+    mostrarProductos()
+
+def modificarProducto():
+    mostrarProductos()
+    res = int(pedirDatos("Ingrese el numero del producto correspondiente a modificar: ", '[0-9]'))
+    for i in range(len(productos_remeras)):
+        if res <= len(productos_remeras):
+            if i == res:
+                contador=0
+                for key in productos_remeras[i].items():
+                    contador+=1
+                    print(f'{contador}: {key}')
+        else:
+            print("Fuera de rango")
+            return
+    clave = int(pedirDatos("Ingrese el numero correspondiente a la propiedad que quieras modificar: ", '[0-9]'))
+    contador = 0
+    for key,value in productos_remeras[res].items():
+        contador+=1
+        if clave == contador:
+            if type(value) == int:
+                nuevoValor = int(input("Ingrese el nuevo valor: "))
+                productos_remeras[res][key] = nuevoValor
+            elif type(value) == str:
+                nuevoValor = (input("Ingrese el nuevo valor: "))
+                productos_remeras[res][key] = nuevoValor
+    mostrarProductos()
+
+
+
+"""El main solamente trabaja llamando a funciones"""
 
 def altaProducto():
     prod = {}
@@ -218,13 +347,18 @@ def modificarProducto():
 def main():
 
     while True:
-        res = int(input("¿Que operación deseas realizar?\n" \
+        res = pedirDatos(
+        "¿Que operación deseas realizar?\n" \
         "1: Registrar Compra \n" \
         "2: Gestionar estado de pedido\n" \
         "3: Consultar informacion Historica\n" \
         "4: Dar de Alta/Baja o Modificar un producto\n"\
-        "5: Salir\n" \
-        ))
+        "5: Salir\n",
+        '^[1-5]$'
+        )
+
+        res = int(res)
+
         match res:
             case 1: 
                 print("Registrar Pedidos")
@@ -234,6 +368,7 @@ def main():
                 gestionarEstadoDePedido()
             case 3:
                 print("Consultar Informacion Histrica")
+                consultarInformaciónHistorica()
             case 4:
                 res = int(pedirDatos("¿Que operacion desea hacer?\n" \
                 "1: Alta\n" \
