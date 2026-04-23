@@ -210,7 +210,6 @@ def gestionarEstadoDePedido():
             
     else:
         print("El pedido tiene un estado desconocido o ya finalizó su ciclo.")
-    pass
 
 def consultarInformaciónHistorica():
     if len(pedidos) == 0:
@@ -288,73 +287,15 @@ def modificarProducto():
         contador+=1
         if clave == contador:
             if type(value) == int:
-                nuevoValor = int(input("Ingrese el nuevo valor: "))
+                nuevoValor = int(pedirDatos("Ingrese el nuevo valor: ", '[0-9]'))
                 productos_remeras[res][key] = nuevoValor
             elif type(value) == str:
-                nuevoValor = (input("Ingrese el nuevo valor: "))
+                nuevoValor = pedirDatos("Ingrese el nuevo valor: ", '[a-zA-Z ]')
                 productos_remeras[res][key] = nuevoValor
     mostrarProductos()
-
 
 
 """El main solamente trabaja llamando a funciones"""
-
-def altaProducto():
-    prod = {}
-    prod["Id"] = len(productos_remeras)
-    prod["Nombre"] = pedirDatos("Ingrese el nombre del nuevo producto: ", '[a-zA-Z]')
-    prod["Color"] = pedirDatos("Ingrese el color del nuevo producto: ", '[a-zA-Z]')
-    prod["Talle"] = pedirDatos("Ingrese el talle del nuevo producto: ", '[a-zA-Z]')
-    prod["Precio"] = int(pedirDatos("Ingrese el precio del nuevo producto: ", '[0-9]'))
-    prod["CantidadStock"] = int(pedirDatos("Ingrese la cantidad de stock del nuevo producto: ", '[0-9]'))
-    productos_remeras.append(prod)
-
-    res = pedirDatos("¿Desea listar los productos? (si/no): ", '[a-zA-Z]')
-    if res == "si":
-        mostrarProductos()
-    else:
-        print("Volviendo al menu...")
-        time.sleep(1)
-
-def bajaProducto():
-    mostrarProductos()
-    res = int(pedirDatos("Ingrese el numero del producto correspondiente a la baja: ", '[0-9]'))
-    prod_eliminado = productos_remeras.pop(res)
-    print(f'El producto eliminado fue: \n\
-{prod_eliminado["Nombre"]}\n\
-Talle {prod_eliminado["Talle"]}\n\
-Color {prod_eliminado["Color"]}\n\
-Mostrando productos actuales y volviendo al menu...')
-    time.sleep(3)
-    mostrarProductos()
-
-
-def modificarProducto():
-    mostrarProductos()
-    res = int(pedirDatos("Ingrese el numero del producto correspondiente a modificar: ", '[0-9]'))
-    for i in range(len(productos_remeras)):
-        if res <= len(productos_remeras):
-            if i == res:
-                contador=0
-                for key in productos_remeras[i].items():
-                    contador+=1
-                    print(f'{contador}: {key}')
-        else:
-            print("Fuera de rango")
-            return
-    clave = int(pedirDatos("Ingrese el numero correspondiente a la propiedad que quieras modificar: ", '[0-9]'))
-    contador = 0
-    for key,value in productos_remeras[res].items():
-        contador+=1
-        if clave == contador:
-            if type(value) == int:
-                nuevoValor = int(input("Ingrese el nuevo valor: "))
-                productos_remeras[res][key] = nuevoValor
-            elif type(value) == str:
-                nuevoValor = (input("Ingrese el nuevo valor: "))
-                productos_remeras[res][key] = nuevoValor
-    mostrarProductos()
-
 def main():
 
     while True:
