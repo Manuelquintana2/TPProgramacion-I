@@ -358,48 +358,83 @@ def modificarProducto():
 def main():
 
     while True:
+
         res = pedirDatos(
-        "¿Que operación deseas realizar?\n" \
-        "1: Registrar Compra \n" \
-        "2: Gestionar estado de pedido\n" \
-        "3: Consultar informacion Historica\n" \
-        "4: Dar de Alta/Baja o Modificar un producto\n"\
-        "5: Salir\n",
-        '^[1-5]$'
+
+            "¿Que operación deseas realizar?\n"
+
+            "1: Registrar Compra \n"
+
+            "2: Gestionar estado de pedido\n"
+
+            "3: Consultar informacion Historica\n"
+
+            "4: Dar de Alta/Baja o Modificar un producto\n"
+
+            "5: Salir\n",
+
+            '^[1-5]$'
+
         )
 
         res = int(res)
 
-        match res:
-            case 1: 
-                print("Registrar Pedidos")
-                registrarPedidos()
-            case 2:
-                print("Gestionar Estado de pedido")
-                gestionarEstadoDePedido()
-            case 3:
-                print("Consultar Informacion Histrica")
-                consultarInformaciónHistorica()
-            case 4:
-                res = int(pedirDatos("¿Que operacion desea hacer?\n" \
-                "1: Alta\n" \
-                "2: Baja\n" \
-                "3: Modificar\n",'[1-3]'))
-                match res:
-                    case 1:
-                        altaProducto()
-                    case 2:
-                        bajaProducto()
-                    case 3:
-                        modificarProducto()
-                    case _:
-                        print("Invalido")
-            case 5:
-                break
-            case _:
+        if res == 1:
+            print("Registrar Pedidos")
+            registrarPedidos()
+
+        elif res == 2:
+
+            print("Gestionar Estado de pedido")
+            gestionarEstadoDePedido()
+
+        elif res == 3:
+
+            print("Consultar Informacion Historica")
+            consultarInformaciónHistorica()
+
+        elif res == 4:
+
+            subopcion = int(pedirDatos(
+
+                "¿Que operacion desea hacer?\n"
+
+                "1: Alta\n"
+
+                "2: Baja\n"
+
+                "3: Modificar\n",
+
+                '[1-3]'
+
+            ))
+
+            if subopcion == 1:
+
+                altaProducto()
+
+            elif subopcion == 2:
+
+                bajaProducto()
+
+            elif subopcion == 3:
+
+                modificarProducto()
+
+            else:
+
                 print("Invalido")
 
+        elif res == 5:
+
+            break
+
+        else:
+
+            print("Invalido")
+
     print("Saliendo ...")
+
     time.sleep(1)
 
 main()
