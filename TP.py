@@ -1,5 +1,6 @@
 import time
 import re
+
 # Descripción del sistema
 # El sistema está hecho para gestionar pedidos de un e-commerce,
 # incluyendo la carga de productos comprados, cantidades, 
@@ -52,27 +53,47 @@ productos_remeras = [
 numeroOrden = 1000
 
 def generarNumeroOrden():
+    """ 
+    Administra la variable global numeroOrden para asignar un ID único 
+    y correlativo a cada nuevo pedido.
+    """
     global numeroOrden
     orden = numeroOrden
     numeroOrden += 1
     return orden
 
 def pedirDatos(mensaje, patron):
+    """ 
+    Solicita una entrada al usuario y delega la validación 
+    de la misma mediante una expresión regular.
+    """
     dato = input(mensaje)
     res = validaciones(patron, dato)
     return res
 
 def validaciones(patron,valor):
+    """ 
+    Ejecuta un bucle de control que valida el valor ingresado contra 
+    el patrón Regex proporcionado hasta que sea correcto.
+    """
     while not(re.match(patron,valor)):
         print('No valido')
         valor = input('Ingrese nuevamente: ')
     return valor
 
 def mostrarProductos():
+    """ 
+    Itera sobre la lista de productos_remeras para imprimir 
+    el catálogo disponible en la consola.
+    """
     for i in range(len(productos_remeras)):
         print(f'{i}: {productos_remeras[i]["Nombre"]} - Talle: {productos_remeras[i]["Talle"]} - Precio: {productos_remeras[i]["Precio"]}')
 
 def elegirMetodosDeEnvio():
+    """ 
+    Muestra el menú de envío y gestiona la selección del usuario, 
+    retornando el nombre del método seleccionado.
+    """
     print("\nMétodos de envío:")
     print("1 - Retiro en sucursal")
     print("2 - Envío estándar")
@@ -90,9 +111,12 @@ def elegirMetodosDeEnvio():
         return "Envío estándar"
     else:
         return "Envío express"
-    
 
 def registrarPedidos():
+    """ 
+    Función principal de flujo de venta. Captura datos del cliente, 
+    gestiona el carrito de compras, verifica stock y almacena el pedido final.
+    """
     flag = "si"
     cliente = pedirDatos("Ingrese el nombre del cliente: ", '[a-zA-Z]')
     cliente = cliente.upper()
@@ -116,10 +140,10 @@ def registrarPedidos():
                 if cantidad < productos_remeras[i]["CantidadStock"]:
                     precioUnitario = productos_remeras[i]["Precio"]
                     precioTotal = cantidad * productos_remeras[i]["Precio"]
-                    producto = productos_remeras[i]["Nombre"]
+                    producto_nombre = productos_remeras[i]["Nombre"]
                     productos_remeras[i]["CantidadStock"] = productos_remeras[i]["CantidadStock"] - cantidad
 
-                    items.append({"Producto" : producto,
+                    items.append({"Producto" : producto_nombre,
                                 "PrecioUnitario" : precioUnitario,
                                 "Cantidad" : cantidad,
                                 "PrecioTotal" : precioTotal
@@ -127,7 +151,6 @@ def registrarPedidos():
                 else:
                     print("No tenemos la cantidad de stock suficiente para la compra")
 
-    
         flag = pedirDatos("¿Quiere seguir comprando?: (si/no)\n", '^(si|no)$')
 
     metodoDeEnvio = elegirMetodosDeEnvio()
@@ -148,24 +171,48 @@ def registrarPedidos():
     \nEstado: {pedido["Estado"]}\
     \nMetodoDeEnvio : {pedido["MetodoDeEnvio"]}')
 
-    print(f"{'Producto':<30} | {'Cant.':<5} | {'Subtotal':<10}")
     total_compra = 0
+    print("--- DETALLE DE COMPRA ---")
+    
     for item in pedido["Items"]:
         nombre_prod = item["Producto"]
         cant = item["Cantidad"]
         subtotal = item["PrecioTotal"]
         total_compra += subtotal
-        print(f"{nombre_prod:<30} | {cant:<5} | ${subtotal:>8}")
+        
+        print(f"Producto: {nombre_prod}")
+        print(f"Cantidad: {cant}")
+        print(f"Subtotal: ${subtotal}")
+        print("-" * 20) 
+
+    print(f"TOTAL A PAGAR: ${total_compra}")
+    print("=" * 30 + "\n")
     
-    print(f"{'-'*50}")
-    print(f"{'TOTAL A PAGAR:':<28} ${total_compra:>20}")
-    print(f"{'='*50}\n")
     pedidos.append(pedido)
 
 def gestionarEstadoDePedido():
+    """ 
+    Busca un pedido por número de orden y permite actualizar su estado 
+    (Pagado -> Empaquetado -> Enviado -> Reenviado).
+    """
     if len(pedidos) == 0:
         print("No hay pedidos registrados.")
         return
+
+    # --- NUEVA SECCIÓN: Listado de pedidos para referencia ---
+    print("\n--- Listado de Pedidos Disponibles ---")
+    
+    for p in pedidos:
+        nro = p['NroDeOrden']
+        cliente = p['Cliente']
+        direc = p['Direccion']
+        estado = p['Estado']
+        
+        # Formato simple y directo
+        print(f"Nro de Orden: {nro} - Nombre: {cliente} - Dirección: {direc} - Estado: {estado}")
+    
+    print("-" * 50 + "\n")
+    # ---------------------------------------------------------
     nro_orden_buscar = int(pedirDatos("Ingrese el número de orden que desea gestionar: ", '[0-9]+'))
 
     indice = 0
@@ -175,47 +222,58 @@ def gestionarEstadoDePedido():
         if pedidos[indice]["NroDeOrden"] == nro_orden_buscar:
             encontrado = True
         else:
-            indice += 1 # Solo avanzamos si no lo encontramos
+            indice += 1
 
-    if len(pedidos) == 0:
-        print("No hay pedidos registrados.")
+    if not encontrado:
+        print(f"No se encontró la orden Nro {nro_orden_buscar}.")
         return
     
     estado_actual = pedidos[indice]["Estado"]
     
-    print(f" Gestionando Orden Nro: {nro_orden_buscar}")
-    print(f"Estado actual: {estado_actual}")
+    print(f"\n> Gestionando Orden Nro: {nro_orden_buscar}")
+    print(f"> Cliente: {pedidos[indice]['Cliente']}")
+    print(f"> Estado actual: {estado_actual}")
     
+    # Lógica de cambio de estados (se mantiene igual)
     if estado_actual == "Pagado":
         print("Siguiente paso lógico: 'Empaquetado'")
-        res = input("¿Desea cambiar el estado a 'Empaquetado'? (si/no): ")
-        if res == "si" or res == "SI" or res == "Si":
+        res = input("¿Desea cambiar el estado a 'Empaquetado'? (si/no): ").lower()
+        if res == "si":
             pedidos[indice]["Estado"] = "Empaquetado"
             print("¡Éxito! El pedido ahora está Empaquetado.")
             
     elif estado_actual == "Empaquetado":
         print("Siguiente paso lógico: 'Enviado'")
-        res = input("¿Desea cambiar el estado a 'Enviado'? (si/no): ")
-        if res == "si" or res == "SI" or res == "Si":
+        res = input("¿Desea cambiar el estado a 'Enviado'? (si/no): ").lower()
+        if res == "si":
             pedidos[indice]["Estado"] = "Enviado"
             print("¡Éxito! El pedido ahora está Enviado.")
             
     elif estado_actual == "Enviado" or estado_actual == "Reenviado":
         print("El pedido ya fue enviado.")
-        print("Opción disponible: 'Reenviado' (En caso de fallo o inconformidad del cliente)")
-        res = input("¿Desea registrar un reenvío para este pedido? (si/no): ")
-        if res == "si" or res == "SI" or res == "Si":
+        print("Opción disponible: 'Reenviado'")
+        res = input("¿Desea registrar un reenvío para este pedido? (si/no): ").lower()
+        if res == "si":
             pedidos[indice]["Estado"] = "Reenviado"
             print("¡Éxito! El pedido ha sido marcado como Reenviado.")
-            
     else:
         print("El pedido tiene un estado desconocido o ya finalizó su ciclo.")
-    pass
 
-def consultarInformaciónHistorica():
+def consultarInformacionHistorica():
+    """ 
+    Filtra los pedidos realizados buscando por nombre del cliente y 
+    muestra el desglose completo de sus compras.
+    """
     if len(pedidos) == 0:
         print("No hay pedidos cargados.")
         return
+
+    clientes_disponibles = sorted(list(set(p["Cliente"] for p in pedidos)))
+    
+    print("\n--- Clientes con pedidos registrados ---")
+    for cliente in clientes_disponibles:
+        print(f"• {cliente}")
+    print("----------------------------------------\n")
 
     clienteBuscado = pedirDatos("Ingrese el nombre del cliente a buscar: ", '[a-zA-Z]+')
     clienteBuscado = clienteBuscado.upper()
@@ -241,6 +299,10 @@ def consultarInformaciónHistorica():
         print("-" * 50)
 
 def altaProducto():
+    """ 
+    Registra un nuevo producto en el catálogo solicitando sus atributos 
+    e incrementando el tamaño de productos_remeras.
+    """
     prod = {}
     prod["Id"] = len(productos_remeras)
     prod["Nombre"] = pedirDatos("Ingrese el nombre del nuevo producto: ", '[a-zA-Z]')
@@ -258,6 +320,10 @@ def altaProducto():
         time.sleep(1)
 
 def bajaProducto():
+    """ 
+    Elimina un producto del catálogo mediante su índice y 
+    muestra un resumen del objeto borrado.
+    """
     mostrarProductos()
     res = int(pedirDatos("Ingrese el numero del producto correspondiente a la baja: ", '[0-9]'))
     prod_eliminado = productos_remeras.pop(res)
@@ -270,6 +336,10 @@ Mostrando productos actuales y volviendo al menu...')
     mostrarProductos()
 
 def modificarProducto():
+    """ 
+    Permite editar campos específicos (Nombre, Precio, Stock, etc.) 
+    de un producto existente seleccionado por índice.
+    """
     mostrarProductos()
     res = int(pedirDatos("Ingrese el numero del producto correspondiente a modificar: ", '[0-9]'))
     for i in range(len(productos_remeras)):
@@ -288,118 +358,98 @@ def modificarProducto():
         contador+=1
         if clave == contador:
             if type(value) == int:
-                nuevoValor = int(input("Ingrese el nuevo valor: "))
+                nuevoValor = int(pedirDatos("Ingrese el nuevo valor: ", '[0-9]'))
                 productos_remeras[res][key] = nuevoValor
             elif type(value) == str:
-                nuevoValor = (input("Ingrese el nuevo valor: "))
+                nuevoValor = pedirDatos("Ingrese el nuevo valor: ", '[a-zA-Z ]')
                 productos_remeras[res][key] = nuevoValor
     mostrarProductos()
-
 
 
 """El main solamente trabaja llamando a funciones"""
-
-def altaProducto():
-    prod = {}
-    prod["Id"] = len(productos_remeras)
-    prod["Nombre"] = pedirDatos("Ingrese el nombre del nuevo producto: ", '[a-zA-Z]')
-    prod["Color"] = pedirDatos("Ingrese el color del nuevo producto: ", '[a-zA-Z]')
-    prod["Talle"] = pedirDatos("Ingrese el talle del nuevo producto: ", '[a-zA-Z]')
-    prod["Precio"] = int(pedirDatos("Ingrese el precio del nuevo producto: ", '[0-9]'))
-    prod["CantidadStock"] = int(pedirDatos("Ingrese la cantidad de stock del nuevo producto: ", '[0-9]'))
-    productos_remeras.append(prod)
-
-    res = pedirDatos("¿Desea listar los productos? (si/no): ", '[a-zA-Z]')
-    if res == "si":
-        mostrarProductos()
-    else:
-        print("Volviendo al menu...")
-        time.sleep(1)
-
-def bajaProducto():
-    mostrarProductos()
-    res = int(pedirDatos("Ingrese el numero del producto correspondiente a la baja: ", '[0-9]'))
-    prod_eliminado = productos_remeras.pop(res)
-    print(f'El producto eliminado fue: \n\
-{prod_eliminado["Nombre"]}\n\
-Talle {prod_eliminado["Talle"]}\n\
-Color {prod_eliminado["Color"]}\n\
-Mostrando productos actuales y volviendo al menu...')
-    time.sleep(3)
-    mostrarProductos()
-
-
-def modificarProducto():
-    mostrarProductos()
-    res = int(pedirDatos("Ingrese el numero del producto correspondiente a modificar: ", '[0-9]'))
-    for i in range(len(productos_remeras)):
-        if res <= len(productos_remeras):
-            if i == res:
-                contador=0
-                for key in productos_remeras[i].items():
-                    contador+=1
-                    print(f'{contador}: {key}')
-        else:
-            print("Fuera de rango")
-            return
-    clave = int(pedirDatos("Ingrese el numero correspondiente a la propiedad que quieras modificar: ", '[0-9]'))
-    contador = 0
-    for key,value in productos_remeras[res].items():
-        contador+=1
-        if clave == contador:
-            if type(value) == int:
-                nuevoValor = int(input("Ingrese el nuevo valor: "))
-                productos_remeras[res][key] = nuevoValor
-            elif type(value) == str:
-                nuevoValor = (input("Ingrese el nuevo valor: "))
-                productos_remeras[res][key] = nuevoValor
-    mostrarProductos()
-
 def main():
-
+    """ 
+    Bucle principal que despliega el menú e invoca las 
+    funcionalidades según la elección del usuario.
+    """
     while True:
+
         res = pedirDatos(
-        "¿Que operación deseas realizar?\n" \
-        "1: Registrar Compra \n" \
-        "2: Gestionar estado de pedido\n" \
-        "3: Consultar informacion Historica\n" \
-        "4: Dar de Alta/Baja o Modificar un producto\n"\
-        "5: Salir\n",
-        '^[1-5]$'
+
+            "¿Que operación deseas realizar?\n"
+
+            "1: Registrar Compra \n"
+
+            "2: Gestionar estado de pedido\n"
+
+            "3: Consultar informacion Historica\n"
+
+            "4: Dar de Alta/Baja o Modificar un producto\n"
+
+            "5: Salir\n",
+
+            '^[1-5]$'
+
         )
 
         res = int(res)
 
-        match res:
-            case 1: 
-                print("Registrar Pedidos")
-                registrarPedidos()
-            case 2:
-                print("Gestionar Estado de pedido")
-                gestionarEstadoDePedido()
-            case 3:
-                print("Consultar Informacion Histrica")
-                consultarInformaciónHistorica()
-            case 4:
-                res = int(pedirDatos("¿Que operacion desea hacer?\n" \
-                "1: Alta\n" \
-                "2: Baja\n" \
-                "3: Modificar\n",'[1-3]'))
-                match res:
-                    case 1:
-                        altaProducto()
-                    case 2:
-                        bajaProducto()
-                    case 3:
-                        modificarProducto()
-                    case _:
-                        print("Invalido")
-            case 5:
-                break
-            case _:
+        if res == 1:
+            print("Registrar Pedidos")
+            registrarPedidos()
+
+        elif res == 2:
+
+            print("Gestionar Estado de pedido")
+            gestionarEstadoDePedido()
+
+        elif res == 3:
+
+            print("Consultar Informacion Historica")
+            consultarInformacionHistorica()
+
+        elif res == 4:
+
+            subopcion = int(pedirDatos(
+
+                "¿Que operacion desea hacer?\n"
+
+                "1: Alta\n"
+
+                "2: Baja\n"
+
+                "3: Modificar\n",
+
+                '[1-3]'
+
+            ))
+
+            if subopcion == 1:
+
+                altaProducto()
+
+            elif subopcion == 2:
+
+                bajaProducto()
+
+            elif subopcion == 3:
+
+                modificarProducto()
+
+            else:
+
                 print("Invalido")
 
+        elif res == 5:
+
+            break
+
+        else:
+
+            print("Invalido")
+
     print("Saliendo ...")
+
     time.sleep(1)
 
 main()
