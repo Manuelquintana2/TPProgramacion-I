@@ -166,6 +166,21 @@ def gestionarEstadoDePedido():
     if len(pedidos) == 0:
         print("No hay pedidos registrados.")
         return
+
+    # --- NUEVA SECCIÓN: Listado de pedidos para referencia ---
+    print("\n--- Listado de Pedidos Disponibles ---")
+    
+    for p in pedidos:
+        nro = p['NroDeOrden']
+        cliente = p['Cliente']
+        direc = p['Direccion']
+        estado = p['Estado']
+        
+        # Formato simple y directo
+        print(f"Nro de Orden: {nro} - Nombre: {cliente} - Dirección: {direc} - Estado: {estado}")
+    
+    print("-" * 50 + "\n")
+    # ---------------------------------------------------------
     nro_orden_buscar = int(pedirDatos("Ingrese el número de orden que desea gestionar: ", '[0-9]+'))
 
     indice = 0
@@ -175,46 +190,54 @@ def gestionarEstadoDePedido():
         if pedidos[indice]["NroDeOrden"] == nro_orden_buscar:
             encontrado = True
         else:
-            indice += 1 # Solo avanzamos si no lo encontramos
+            indice += 1
 
-    if len(pedidos) == 0:
-        print("No hay pedidos registrados.")
+    if not encontrado:
+        print(f"No se encontró la orden Nro {nro_orden_buscar}.")
         return
     
     estado_actual = pedidos[indice]["Estado"]
     
-    print(f" Gestionando Orden Nro: {nro_orden_buscar}")
-    print(f"Estado actual: {estado_actual}")
+    print(f"\n> Gestionando Orden Nro: {nro_orden_buscar}")
+    print(f"> Cliente: {pedidos[indice]['Cliente']}")
+    print(f"> Estado actual: {estado_actual}")
     
+    # Lógica de cambio de estados (se mantiene igual)
     if estado_actual == "Pagado":
         print("Siguiente paso lógico: 'Empaquetado'")
-        res = input("¿Desea cambiar el estado a 'Empaquetado'? (si/no): ")
-        if res == "si" or res == "SI" or res == "Si":
+        res = input("¿Desea cambiar el estado a 'Empaquetado'? (si/no): ").lower()
+        if res == "si":
             pedidos[indice]["Estado"] = "Empaquetado"
             print("¡Éxito! El pedido ahora está Empaquetado.")
             
     elif estado_actual == "Empaquetado":
         print("Siguiente paso lógico: 'Enviado'")
-        res = input("¿Desea cambiar el estado a 'Enviado'? (si/no): ")
-        if res == "si" or res == "SI" or res == "Si":
+        res = input("¿Desea cambiar el estado a 'Enviado'? (si/no): ").lower()
+        if res == "si":
             pedidos[indice]["Estado"] = "Enviado"
             print("¡Éxito! El pedido ahora está Enviado.")
             
     elif estado_actual == "Enviado" or estado_actual == "Reenviado":
         print("El pedido ya fue enviado.")
-        print("Opción disponible: 'Reenviado' (En caso de fallo o inconformidad del cliente)")
-        res = input("¿Desea registrar un reenvío para este pedido? (si/no): ")
-        if res == "si" or res == "SI" or res == "Si":
+        print("Opción disponible: 'Reenviado'")
+        res = input("¿Desea registrar un reenvío para este pedido? (si/no): ").lower()
+        if res == "si":
             pedidos[indice]["Estado"] = "Reenviado"
             print("¡Éxito! El pedido ha sido marcado como Reenviado.")
-            
     else:
         print("El pedido tiene un estado desconocido o ya finalizó su ciclo.")
 
-def consultarInformaciónHistorica():
+def consultarInformacionHistorica():
     if len(pedidos) == 0:
         print("No hay pedidos cargados.")
         return
+
+    clientes_disponibles = sorted(list(set(p["Cliente"] for p in pedidos)))
+    
+    print("\n--- Clientes con pedidos registrados ---")
+    for cliente in clientes_disponibles:
+        print(f"• {cliente}")
+    print("----------------------------------------\n")
 
     clienteBuscado = pedirDatos("Ingrese el nombre del cliente a buscar: ", '[a-zA-Z]+')
     clienteBuscado = clienteBuscado.upper()
@@ -332,7 +355,7 @@ def main():
         elif res == 3:
 
             print("Consultar Informacion Historica")
-            consultarInformaciónHistorica()
+            consultarInformacionHistorica()
 
         elif res == 4:
 
