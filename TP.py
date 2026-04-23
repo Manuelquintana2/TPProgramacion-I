@@ -163,6 +163,53 @@ def registrarPedidos():
     pedidos.append(pedido)
 
 def gestionarEstadoDePedido():
+    if len(pedidos) == 0:
+        print("No hay pedidos registrados.")
+        return
+    nro_orden_buscar = int(pedirDatos("Ingrese el número de orden que desea gestionar: ", '[0-9]+'))
+
+    indice = 0
+    encontrado = False
+    
+    while indice < len(pedidos) and encontrado == False:
+        if pedidos[indice]["NroDeOrden"] == nro_orden_buscar:
+            encontrado = True
+        else:
+            indice += 1 # Solo avanzamos si no lo encontramos
+
+    if len(pedidos) == 0:
+        print("No hay pedidos registrados.")
+        return
+    
+    estado_actual = pedidos[indice]["Estado"]
+    
+    print(f" Gestionando Orden Nro: {nro_orden_buscar}")
+    print(f"Estado actual: {estado_actual}")
+    
+    if estado_actual == "Pagado":
+        print("Siguiente paso lógico: 'Empaquetado'")
+        res = input("¿Desea cambiar el estado a 'Empaquetado'? (si/no): ")
+        if res == "si" or res == "SI" or res == "Si":
+            pedidos[indice]["Estado"] = "Empaquetado"
+            print("¡Éxito! El pedido ahora está Empaquetado.")
+            
+    elif estado_actual == "Empaquetado":
+        print("Siguiente paso lógico: 'Enviado'")
+        res = input("¿Desea cambiar el estado a 'Enviado'? (si/no): ")
+        if res == "si" or res == "SI" or res == "Si":
+            pedidos[indice]["Estado"] = "Enviado"
+            print("¡Éxito! El pedido ahora está Enviado.")
+            
+    elif estado_actual == "Enviado" or estado_actual == "Reenviado":
+        print("El pedido ya fue enviado.")
+        print("Opción disponible: 'Reenviado' (En caso de fallo o inconformidad del cliente)")
+        res = input("¿Desea registrar un reenvío para este pedido? (si/no): ")
+        if res == "si" or res == "SI" or res == "Si":
+            pedidos[indice]["Estado"] = "Reenviado"
+            print("¡Éxito! El pedido ha sido marcado como Reenviado.")
+            
+    else:
+        print("El pedido tiene un estado desconocido o ya finalizó su ciclo.")
     pass
 
 def consultarInformaciónHistorica():
