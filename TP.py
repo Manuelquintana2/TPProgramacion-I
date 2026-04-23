@@ -1,21 +1,11 @@
 import time
 import re
-<<<<<<< HEAD
-=======
-
-"""Importamos bibliotecas de tiempo y re para trabajar con expresiones regulares"""
-
->>>>>>> Juan
 # Descripción del sistema
 # El sistema está hecho para gestionar pedidos de un e-commerce,
 # incluyendo la carga de productos comprados, cantidades, 
 # métodos de envío y el seguimiento del estado de cada orden.
-<<<<<<< HEAD
-pedidos = []
-=======
 
 pedidos = [] 
->>>>>>> Juan
 productos_remeras = [
     {
         "id": 0,
@@ -109,31 +99,6 @@ def registrarPedidos():
     direccion = pedirDatos("Ingrese su dirección: ", '[A-Za-z0-9]')
     direccion = direccion.upper()
     items = []
-<<<<<<< HEAD
-    while flag == "si":
-        mostrarProductos()
-        producto = int(pedirDatos("Ingrese el producto que desea comprar (Seleccione un numero): ", '[0-9]'))
-        cantidad = int(pedirDatos("Ingrese la cantidad que desea comprar: ", '[0-9]'))
-        for i in range(len(productos_remeras)):
-            if producto == i:
-                if cantidad < productos_remeras[i]["CantidadStock"]:
-                    precioUnitario = productos_remeras[i]["Precio"]
-                    precioTotal = cantidad * productos_remeras[i]["Precio"]
-                    producto = productos_remeras[i]["Nombre"]
-                    productos_remeras[i]["CantidadStock"] = productos_remeras[i]["CantidadStock"] - cantidad
-
-                    items.append({"Producto" : producto,
-                                "PrecioUnitario" : precioUnitario,
-                                "Cantidad" : cantidad,
-                                "PrecioTotal" : precioTotal
-                                })
-                else:
-                    print("No tenemos la cantidad de stock suficiente para la compra")
-
-    
-        flag = input("¿Quiere seguir comprando?: (si/no)\n")
-
-=======
 
     while flag == "si":
         mostrarProductos()
@@ -165,7 +130,6 @@ def registrarPedidos():
     
         flag = pedirDatos("¿Quiere seguir comprando?: (si/no)\n", '^(si|no)$')
 
->>>>>>> Juan
     metodoDeEnvio = elegirMetodosDeEnvio()
 
     pedido = {}
