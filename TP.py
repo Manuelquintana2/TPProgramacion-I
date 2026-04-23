@@ -148,18 +148,23 @@ def registrarPedidos():
     \nEstado: {pedido["Estado"]}\
     \nMetodoDeEnvio : {pedido["MetodoDeEnvio"]}')
 
-    print(f"{'Producto':<30} | {'Cant.':<5} | {'Subtotal':<10}")
     total_compra = 0
+    print("--- DETALLE DE COMPRA ---")
+    
     for item in pedido["Items"]:
         nombre_prod = item["Producto"]
         cant = item["Cantidad"]
         subtotal = item["PrecioTotal"]
         total_compra += subtotal
-        print(f"{nombre_prod:<30} | {cant:<5} | ${subtotal:>8}")
+        
+        print(f"Producto: {nombre_prod}")
+        print(f"Cantidad: {cant}")
+        print(f"Subtotal: ${subtotal}")
+        print("-" * 20) 
+
+    print(f"TOTAL A PAGAR: ${total_compra}")
+    print("=" * 30 + "\n")
     
-    print(f"{'-'*50}")
-    print(f"{'TOTAL A PAGAR:':<28} ${total_compra:>20}")
-    print(f"{'='*50}\n")
     pedidos.append(pedido)
 
 def gestionarEstadoDePedido():
