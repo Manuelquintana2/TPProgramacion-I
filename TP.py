@@ -319,6 +319,32 @@ def altaProducto():
         print("Volviendo al menu...")
         time.sleep(1)
 
+def procesarUsuarios():
+    matriz = []
+    try:
+        with open('./usuarios.txt', 'r') as arch:
+            for linea in arch.readlines():
+                if linea.strip().split(';')[0] == "nombre":
+                    continue
+                partes = linea.strip().split(';')
+                nombre = partes[0]
+                email = partes[1]
+                contrasenia = partes[2]
+                rol = partes[3]
+                matriz.append([nombre,email,contrasenia,rol])
+        return matriz
+    except FileNotFoundError:
+        print("Archivo no encontrado")
+            
+def login(email, contrasenia):
+    usuarios = procesarUsuarios()
+    for i in usuarios:
+        if i[1] == email and i[2] == contrasenia:
+            return i
+    return "Usuario o contraseña incorrectas"
+
+print(login("manu@gmail.com", "hola123"))
+    
 def bajaProducto():
     """ 
     Elimina un producto del catálogo mediante su índice y 
