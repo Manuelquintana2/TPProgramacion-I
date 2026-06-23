@@ -319,32 +319,6 @@ def altaProducto():
         print("Volviendo al menu...")
         time.sleep(1)
 
-def procesarUsuarios():
-    matriz = []
-    try:
-        with open('./usuarios.txt', 'r') as arch:
-            for linea in arch.readlines():
-                if linea.strip().split(';')[0] == "nombre":
-                    continue
-                partes = linea.strip().split(';')
-                nombre = partes[0]
-                email = partes[1]
-                contrasenia = partes[2]
-                rol = partes[3]
-                matriz.append([nombre,email,contrasenia,rol])
-        return matriz
-    except FileNotFoundError:
-        print("Archivo no encontrado")
-            
-def login(email, contrasenia):
-    usuarios = procesarUsuarios()
-    for i in usuarios:
-        if i[1] == email and i[2] == contrasenia:
-            return i
-    return "Usuario o contraseña incorrectas"
-
-print(login("manu@gmail.com", "hola123"))
-    
 def bajaProducto():
     """ 
     Elimina un producto del catálogo mediante su índice y 
@@ -391,6 +365,31 @@ def modificarProducto():
                 productos_remeras[res][key] = nuevoValor
     mostrarProductos()
 
+def procesarUsuarios():
+    matriz = []
+    try:
+        with open('./usuarios.txt', 'r') as arch:
+            for linea in arch.readlines():
+                if linea.strip().split(';')[0] == "nombre":
+                    continue
+                partes = linea.strip().split(';')
+                nombre = partes[0]
+                email = partes[1]
+                contrasenia = partes[2]
+                rol = partes[3]
+                matriz.append([nombre,email,contrasenia,rol])
+        return matriz
+    except FileNotFoundError:
+        print("Archivo no encontrado")
+            
+def login(email, contrasenia):
+    usuarios = procesarUsuarios()
+    for i in usuarios:
+        if i[1] == email and i[2] == contrasenia:
+            print(f'Bienvenido al sistema {i[0]} tiene permisos de {i[3]}')
+            return i
+    print("Usuario o contraseña incorrectas")
+    return None
 
 """El main solamente trabaja llamando a funciones"""
 def main():
@@ -399,7 +398,15 @@ def main():
     funcionalidades según la elección del usuario.
     """
     try:
-        while True:     
+        while True:    
+            correo = pedirDatos("Bienvenido al sistema, ingrese su correo: ", '[a-zA-Z]')
+            contrasenia = pedirDatos("Ingrese su contraseña: ", '[a-zA-Z0-9]')    
+            usuario = login(correo,contrasenia)
+            while not usuario:
+                correo = pedirDatos("Ingrese su correo: ", '[a-zA-Z]')
+                contrasenia = pedirDatos("Ingrese su contraseña: ", '[a-zA-Z0-9]')    
+                usuario = login(correo,contrasenia)
+            
             res = pedirDatos(
 
                 "¿Que operación deseas realizar?\n"
