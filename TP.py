@@ -365,7 +365,54 @@ def modificarProducto():
                 productos_remeras[res][key] = nuevoValor
     mostrarProductos()
 
+def procesarUsuarios():
+    matriz = []
+    try:
+        with open('./usuarios.txt', 'r') as arch:
+            for linea in arch.readlines():
+                if linea.strip().split(';')[0] == "nombre":
+                    continue
+                partes = linea.strip().split(';')
+                nombre = partes[0]
+                email = partes[1]
+                contrasenia = partes[2]
+                rol = partes[3]
+                matriz.append([nombre,email,contrasenia,rol])
+        return matriz
+    except FileNotFoundError:
+        print("Archivo no encontrado")
+            
+def login(email, contrasenia):
+    usuarios = procesarUsuarios()
+    for i in usuarios:
+        if i[1] == email and i[2] == contrasenia:
+            print(f'Bienvenido al sistema {i[0]} tiene permisos de {i[3]}')
+            return i
+    print("Usuario o contraseña incorrectas")
+    return None
 
+def altaUsuarios(nombre,email,contrasenia,rol):
+    usuario = f'{nombre};{email};{contrasenia};{rol}\n'
+    try:
+        with open('./usuarios.txt', 'a') as arch:
+            arch.write(usuario)
+    except FileNotFoundError:
+        print("No se encontro el archivo")
+    
+def bajaUsuarios(email):
+    usuarios = procesarUsuarios()
+    for i in usuarios:
+        if i[1] == email:
+            usuarios.remove(i)
+    try:
+        with open('./usuarios.txt', 'w') as arch:
+            arch.write('nombre;email;contrasenia;rol\n')
+            for i in usuarios:
+                arch.write(f'{i[0]};{i[1]};{i[2]};{i[3]}\n')
+    except FileNotFoundError:
+        print("El archivo no se encontro")
+            
+bajaUsuarios("rober@gmail.com")
 """El main solamente trabaja llamando a funciones"""
 def main():
     """ 
@@ -373,71 +420,144 @@ def main():
     funcionalidades según la elección del usuario.
     """
     try:
-        while True:     
-            res = pedirDatos(
+        correo = pedirDatos("Bienvenido al sistema, ingrese su correo: ", '[a-zA-Z]')
+        contrasenia = pedirDatos("Ingrese su contraseña: ", '[a-zA-Z0-9]')    
+        usuario = login(correo,contrasenia)
+        while not usuario:
+            correo = pedirDatos("Ingrese su correo: ", '[a-zA-Z]')
+            contrasenia = pedirDatos("Ingrese su contraseña: ", '[a-zA-Z0-9]')    
+            usuario = login(correo,contrasenia)
+        while True:  
+            match(usuario[3]):
+                case "administrador":
+                    res = pedirDatos(
 
-                "¿Que operación deseas realizar?\n"
+                    "¿Que operación deseas realizar?\n"
 
-                "1: Registrar Compra \n"
+                    "1: Registrar Compra \n"
 
-                "2: Gestionar estado de pedido\n"
+                    "2: Gestionar estado de pedido\n"
 
-                "3: Consultar informacion Historica\n"
+                    "3: Consultar informacion Historica\n"
 
-                "4: Dar de Alta/Baja o Modificar un producto\n"
+                    "4: Dar de Alta/Baja o Modificar un producto\n"
 
-                "5: Salir\n",
+                    "5: Salir\n",
 
-                '^[1-5]$'
+                    '^[1-5]$'
 
-            )
-
-            res = int(res)
-            
-            match(res):
-                case 1:
-                    print("Registrar pedidos")
-                    registrarPedidos()
-                    
-                case 2:
-                    print("Gestionar Estado de pedido")
-                    gestionarEstadoDePedido()
-                
-                case 3:
-                    print("Consultar Informacion Historica")
-                    consultarInformacionHistorica()
-                    
-                case 4:
-                    subopcion = int(pedirDatos(
-                    "¿Que operacion desea hacer?\n"
-
-                    "1: Alta\n"
-
-                    "2: Baja\n"
-
-                    "3: Modificar\n",
-
-                    '[1-3]'
-
-                ))
-                    match(subopcion):
+                )
+                    res = int(res)
+                    match(res):
                         case 1:
-                            altaProducto()
+                            print("Registrar pedidos")
+                            registrarPedidos()
                         case 2:
-                            bajaProducto()
+                            print("Gestionar Estado de pedido")
+                            gestionarEstadoDePedido()
                         case 3:
-                            modificarProducto()
+                            print("Consultar Informacion Historica")
+                            consultarInformacionHistorica()
+                        case 4:
+                            subopcion = int(pedirDatos(
+                            "¿Que operacion desea hacer?\n"
+
+                            "1: Alta\n"
+
+                            "2: Baja\n"
+
+                            "3: Modificar\n",
+
+                            '[1-3]'
+                            ))
+                            match(subopcion):
+                                case 1:
+                                    altaProducto()
+                                case 2:
+                                    bajaProducto()
+                                case 3:
+                                    modificarProducto()
+                                case _:
+                                    print("Invalido")
+                        case 5:
+                            print("Saliendo ...")
+                            time.sleep(1)
+                            break     
                         case _:
                             print("Invalido")
-                case 5:
-                    break     
-                case _:
-                    print("Invalido")
+                            
+                case "supervisor":
+                    res = pedirDatos(
 
-        print("Saliendo ...")
+                    "¿Que operación deseas realizar?\n"
 
-        time.sleep(1)
+                    "1: Registrar Compra \n"
+
+                    "2: Gestionar estado de pedido\n"
+
+                    "3: Consultar informacion Historica\n"
+
+                    "4: Modificar un producto\n"
+
+                    "5: Salir\n",
+
+                    '^[1-5]$'
+
+                )
+                    res = int(res)
+                    match(res):
+                        case 1:
+                            print("Registrar pedidos")
+                            registrarPedidos()
+                        case 2:
+                            print("Gestionar Estado de pedido")
+                            gestionarEstadoDePedido()
+                        case 3:
+                            print("Consultar Informacion Historica")
+                            consultarInformacionHistorica()
+                        case 4:
+                            modificarProducto()
+                        case 5:    
+                            print("Saliendo ...")
+                            time.sleep(1)
+                            break     
+                        case _:
+                            print("Invalido")
+
+                case "empleado":
+                    res = pedirDatos(
+
+                    "¿Que operación deseas realizar?\n"
+
+                    "1: Registrar Compra \n"
+
+                    "2: Gestionar estado de pedido\n"
+
+                    "3: Consultar informacion Historica\n"
+
+                    "4: Salir\n",
+
+                    '^[1-5]$'
+
+                )
+                    res = int(res)
+                    match(res):
+                        case 1:
+                            print("Registrar pedidos")
+                            registrarPedidos()
+                        case 2:
+                            print("Gestionar Estado de pedido")
+                            gestionarEstadoDePedido()
+                        case 3:
+                            print("Consultar Informacion Historica")
+                            consultarInformacionHistorica()
+                        case 4:
+                            print("Saliendo ...")
+                            time.sleep(1)
+                            break     
+                        case _:
+                            print("Invalido")
     except KeyboardInterrupt:
         print("Saliendo...")
-    
+        
 main()
