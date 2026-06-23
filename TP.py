@@ -392,14 +392,27 @@ def login(email, contrasenia):
     return None
 
 def altaUsuarios(nombre,email,contrasenia,rol):
-    usuario = f'\n{nombre};{email};{contrasenia};{rol}'
+    usuario = f'{nombre};{email};{contrasenia};{rol}\n'
     try:
-        with open('./usuarios.txt', 'w') as arch:
+        with open('./usuarios.txt', 'a') as arch:
             arch.write(usuario)
     except FileNotFoundError:
         print("No se encontro el archivo")
     
-
+def bajaUsuarios(email):
+    usuarios = procesarUsuarios()
+    for i in usuarios:
+        if i[1] == email:
+            usuarios.remove(i)
+    try:
+        with open('./usuarios.txt', 'w') as arch:
+            arch.write('nombre;email;contrasenia;rol\n')
+            for i in usuarios:
+                arch.write(f'{i[0]};{i[1]};{i[2]};{i[3]}\n')
+    except FileNotFoundError:
+        print("El archivo no se encontro")
+            
+bajaUsuarios("rober@gmail.com")
 """El main solamente trabaja llamando a funciones"""
 def main():
     """ 
