@@ -398,15 +398,14 @@ def main():
     funcionalidades según la elección del usuario.
     """
     try:
-        while True:    
-            correo = pedirDatos("Bienvenido al sistema, ingrese su correo: ", '[a-zA-Z]')
+        correo = pedirDatos("Bienvenido al sistema, ingrese su correo: ", '[a-zA-Z]')
+        contrasenia = pedirDatos("Ingrese su contraseña: ", '[a-zA-Z0-9]')    
+        usuario = login(correo,contrasenia)
+        while not usuario:
+            correo = pedirDatos("Ingrese su correo: ", '[a-zA-Z]')
             contrasenia = pedirDatos("Ingrese su contraseña: ", '[a-zA-Z0-9]')    
             usuario = login(correo,contrasenia)
-            while not usuario:
-                correo = pedirDatos("Ingrese su correo: ", '[a-zA-Z]')
-                contrasenia = pedirDatos("Ingrese su contraseña: ", '[a-zA-Z0-9]')    
-                usuario = login(correo,contrasenia)
-            
+        while True:    
             res = pedirDatos(
 
                 "¿Que operación deseas realizar?\n"
@@ -429,39 +428,65 @@ def main():
             
             match(res):
                 case 1:
-                    print("Registrar pedidos")
-                    registrarPedidos()
-                    
+                    if usuario[3] in ["administrador","supervisor","empleado"]:
+                        print("Registrar pedidos")
+                        registrarPedidos()
+                    else:
+                        print("No tiene permisos para realizar esta opción")
+                        input("Toque cualquier tecla para continuar...")
+                        
                 case 2:
-                    print("Gestionar Estado de pedido")
-                    gestionarEstadoDePedido()
-                
+                    if usuario[3] in ["administrador","supervisor","empleado"]:
+                        print("Gestionar Estado de pedido")
+                        gestionarEstadoDePedido()
+                    else:
+                        print("No tiene permisos para realizar esta opción")
+                        input("Toque cualquier tecla para continuar...")
                 case 3:
-                    print("Consultar Informacion Historica")
-                    consultarInformacionHistorica()
-                    
+                    if usuario[3] in ["administrador","supervisor","empleado"]:
+                        print("Consultar Informacion Historica")
+                        consultarInformacionHistorica()
+                    else:
+                        print("No tiene permisos para realizar esta opción")
+                        input("Toque cualquier tecla para continuar...")
                 case 4:
-                    subopcion = int(pedirDatos(
-                    "¿Que operacion desea hacer?\n"
+                    if usuario[3] in ["administrador","supervisor"]:
+                        subopcion = int(pedirDatos(
+                        "¿Que operacion desea hacer?\n"
 
-                    "1: Alta\n"
+                        "1: Alta\n"
 
-                    "2: Baja\n"
+                        "2: Baja\n"
 
-                    "3: Modificar\n",
+                        "3: Modificar\n",
 
-                    '[1-3]'
+                        '[1-3]'
 
-                ))
-                    match(subopcion):
-                        case 1:
-                            altaProducto()
-                        case 2:
-                            bajaProducto()
-                        case 3:
-                            modificarProducto()
-                        case _:
-                            print("Invalido")
+                    ))
+                        match(subopcion):
+                            case 1:
+                                if usuario[3] in ["administrador"]:
+                                    altaProducto()
+                                else:
+                                    print("No tiene permisos para realizar esta opción")
+                                    input("Toque cualquier tecla para continuar...")
+                            case 2:
+                                if usuario[3] in ["administrador"]:
+                                    bajaProducto()
+                                else:
+                                    print("No tiene permisos para realizar esta opción")
+                                    input("Toque cualquier tecla para continuar...")
+                            case 3:
+                                if usuario[3] in ["administrador","supervisor"]:
+                                    modificarProducto()
+                                else:
+                                    print("No tiene permisos para realizar esta opción")
+                                    input("Toque cualquier tecla para continuar...")
+                            case _:
+                                print("Invalido")
+                    else:
+                        print("No tiene permisos para realizar esta opción")
+                        input("Toque cualquier tecla para continuar...")
                 case 5:
                     break     
                 case _:
