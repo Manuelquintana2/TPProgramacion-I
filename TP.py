@@ -372,84 +372,72 @@ def main():
     Bucle principal que despliega el menú e invoca las 
     funcionalidades según la elección del usuario.
     """
-    while True:
+    try:
+        while True:     
+            res = pedirDatos(
 
-        res = pedirDatos(
+                "¿Que operación deseas realizar?\n"
 
-            "¿Que operación deseas realizar?\n"
+                "1: Registrar Compra \n"
 
-            "1: Registrar Compra \n"
+                "2: Gestionar estado de pedido\n"
 
-            "2: Gestionar estado de pedido\n"
+                "3: Consultar informacion Historica\n"
 
-            "3: Consultar informacion Historica\n"
+                "4: Dar de Alta/Baja o Modificar un producto\n"
 
-            "4: Dar de Alta/Baja o Modificar un producto\n"
+                "5: Salir\n",
 
-            "5: Salir\n",
+                '^[1-5]$'
 
-            '^[1-5]$'
+            )
 
-        )
+            res = int(res)
+            
+            match(res):
+                case 1:
+                    print("Registrar pedidos")
+                    registrarPedidos()
+                    
+                case 2:
+                    print("Gestionar Estado de pedido")
+                    gestionarEstadoDePedido()
+                
+                case 3:
+                    print("Consultar Informacion Historica")
+                    consultarInformacionHistorica()
+                    
+                case 4:
+                    subopcion = int(pedirDatos(
+                    "¿Que operacion desea hacer?\n"
 
-        res = int(res)
+                    "1: Alta\n"
 
-        if res == 1:
-            print("Registrar Pedidos")
-            registrarPedidos()
+                    "2: Baja\n"
 
-        elif res == 2:
+                    "3: Modificar\n",
 
-            print("Gestionar Estado de pedido")
-            gestionarEstadoDePedido()
+                    '[1-3]'
 
-        elif res == 3:
+                ))
+                    match(subopcion):
+                        case 1:
+                            altaProducto()
+                        case 2:
+                            bajaProducto()
+                        case 3:
+                            modificarProducto()
+                        case _:
+                            print("Invalido")
+                case 5:
+                    break     
+                case _:
+                    print("Invalido")
 
-            print("Consultar Informacion Historica")
-            consultarInformacionHistorica()
+        print("Saliendo ...")
 
-        elif res == 4:
-
-            subopcion = int(pedirDatos(
-
-                "¿Que operacion desea hacer?\n"
-
-                "1: Alta\n"
-
-                "2: Baja\n"
-
-                "3: Modificar\n",
-
-                '[1-3]'
-
-            ))
-
-            if subopcion == 1:
-
-                altaProducto()
-
-            elif subopcion == 2:
-
-                bajaProducto()
-
-            elif subopcion == 3:
-
-                modificarProducto()
-
-            else:
-
-                print("Invalido")
-
-        elif res == 5:
-
-            break
-
-        else:
-
-            print("Invalido")
-
-    print("Saliendo ...")
-
-    time.sleep(1)
-
+        time.sleep(1)
+    except KeyboardInterrupt:
+        print("Saliendo...")
+    
 main()
