@@ -1,0 +1,42 @@
+[
+    {
+        "id": 0,
+        "Nombre": "Remera Basic Oversize",
+        "Color": "Negro",
+        "Talle": "L",
+        "Precio": 6000,
+        "CantidadStock": 50
+    },
+    {
+        "id": 1,
+        "Nombre": "Remera Classic Oversize",
+        "Color": "Blanco",
+        "Talle": "M",
+        "Precio": 8000,
+        "CantidadStock": 35
+    },
+    {
+        "id": 2,
+        "Nombre": "Remera Estampada Rock",
+        "Color": "Gris Melange",
+        "Talle": "XL",
+        "Precio": 3250,
+        "CantidadStock": 15
+    },
+    {
+        "id": 3,
+        "Nombre": "Remera Deportiva Dry-Fit",
+        "Color": "Azul Francia",
+        "Talle": "S",
+        "Precio": 13000,
+        "CantidadStock": 15
+    },
+    {
+        "id": 4,
+        "Nombre": "Remera Polo Clásica",
+        "Color": "Verde Oliva",
+        "Talle": "XXL",
+        "Precio": 13000,
+        "CantidadStock": 10
+    }
+]
