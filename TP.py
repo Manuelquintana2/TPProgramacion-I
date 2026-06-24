@@ -53,20 +53,24 @@ productos_remeras = [
 numeroOrden = 1000
 
 def generarNumeroOrden():
+
     """ 
     Administra la variable global numeroOrden para asignar un ID único 
     y correlativo a cada nuevo pedido.
     """
+
     global numeroOrden
     orden = numeroOrden
     numeroOrden += 1
     return orden
 
 def pedirDatos(mensaje, patron):
+
     """ 
     Solicita una entrada al usuario y delega la validación 
     de la misma mediante una expresión regular.
     """
+    
     dato = input(mensaje)
     res = validaciones(patron, dato)
     return res
@@ -299,10 +303,12 @@ def consultarInformacionHistorica():
         print("-" * 50)
 
 def altaProducto():
+
     """ 
     Registra un nuevo producto en el catálogo solicitando sus atributos 
     e incrementando el tamaño de productos_remeras.
     """
+
     prod = {}
     prod["Id"] = len(productos_remeras)
     prod["Nombre"] = pedirDatos("Ingrese el nombre del nuevo producto: ", '[a-zA-Z]')
