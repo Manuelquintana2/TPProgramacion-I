@@ -85,6 +85,13 @@ def validaciones(patron,valor):
         valor = input('Ingrese nuevamente: ')
     return valor
 
+def contadorSalida(numero):
+    if numero == 0:
+        return
+    print(numero)
+    time.sleep(1)
+    contadorSalida(numero - 1)
+
 def mostrarProductos():
     """ 
     Itera sobre la lista de productos_remeras para imprimir 
@@ -494,7 +501,7 @@ def main():
                                     print("Invalido")
                         case 5:
                             print("Saliendo ...")
-                            time.sleep(1)
+                            contadorSalida(5)
                             break     
                         case _:
                             print("Invalido")
@@ -532,7 +539,7 @@ def main():
                             modificarProducto()
                         case 5:    
                             print("Saliendo ...")
-                            time.sleep(1)
+                            contadorSalida(5)
                             break     
                         case _:
                             print("Invalido")
@@ -566,11 +573,12 @@ def main():
                             consultarInformacionHistorica()
                         case 4:
                             print("Saliendo ...")
-                            time.sleep(1)
+                            contadorSalida(5)
                             break     
                         case _:
                             print("Invalido")
     except:
         print("Saliendo...")
+        contadorSalida(5)
         
 main()
