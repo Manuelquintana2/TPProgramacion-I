@@ -440,7 +440,6 @@ def bajaUsuarios(email):
     except:
         print("El archivo no se encontro")
             
-bajaUsuarios("rober@gmail.com")
 """El main solamente trabaja llamando a funciones"""
 def main():
     """ 
