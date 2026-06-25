@@ -21,6 +21,14 @@ def cargarProductos():
         print("No se pudo cargar productos.json")
         return []
 
+def cargarPedidos():
+    try:
+        with open('./pedidos.json', 'r') as arch:
+            return json.load(arch)
+    except FileNotFoundError:
+        print("No se pudo cargar pedidos.json")
+        return []
+    
 def guardarProductos():
     """ 
     Guarda la lista actual de productos_remeras en productos.json 
@@ -32,8 +40,17 @@ def guardarProductos():
     except:
         print("No se pudo guardar productos.json")
 
-productos_remeras = cargarProductos()
+def guardarPedidos():
+    try:
+        with open('./pedidos.json', 'w') as arch:
+            json.dump(pedidos, arch, indent=4, ensure_ascii=False)
+    except:
+        print("No se pudo guardar pedidos.json")
+    
 
+
+productos_remeras = cargarProductos()
+pedidos = cargarPedidos()
 numeroOrden = 1000
 
 def generarNumeroOrden():
@@ -189,6 +206,10 @@ def registrarPedidos():
     
     pedidos.append(pedido)
     guardarProductos()
+    guardarPedidos()
+            
+    input("Presione cualquier tecla para continuar...")
+
 
 def gestionarEstadoDePedido():
     """ 
@@ -258,6 +279,7 @@ def gestionarEstadoDePedido():
             print("¡Éxito! El pedido ha sido marcado como Reenviado.")
     else:
         print("El pedido tiene un estado desconocido o ya finalizó su ciclo.")
+    guardarPedidos()
 
 def consultarInformacionHistorica():
     """ 
@@ -297,6 +319,7 @@ def consultarInformacionHistorica():
             print(f" - {item['Producto']} | Cantidad: {item['Cantidad']} | Subtotal: ${item['PrecioTotal']}")
 
         print("-" * 50)
+        input("Presione cualquier tecla para continuar...")
 
 def altaProducto():
 
@@ -388,11 +411,7 @@ def procesarUsuarios():
                 if linea.strip().split(';')[0] == "nombre":
                     continue
                 partes = linea.strip().split(';')
-                nombre = partes[0]
-                email = partes[1]
-                contrasenia = partes[2]
-                rol = partes[3]
-                matriz.append([nombre,email,contrasenia,rol])
+                matriz.append(partes)
         return matriz
     except:
         print("Archivo no encontrado")
@@ -516,9 +535,7 @@ def main():
                                     altaUsuarios(nombre, email, contrasenia, rol)
                                 case 2:
                                     email = pedirDatos("Ingrese el email del empleado que vas a dar de baja: ", '^.+$')
-                                    bajaUsuarios(email)
-                            contadorSalida(5)
-                            break     
+                                    bajaUsuarios(email)     
                         case _:
                             print("Invalido")
                             
