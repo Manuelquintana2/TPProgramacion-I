@@ -1,54 +1,30 @@
 import time
 import re
+import json
 
 # Descripción del sistema
 # El sistema está hecho para gestionar pedidos de un e-commerce,
 # incluyendo la carga de productos comprados, cantidades, 
 # métodos de envío y el seguimiento del estado de cada orden.
 
-pedidos = [] 
-productos_remeras = [
-    {
-        "id": 0,
-        "Nombre": "Remera Basic Oversize",
-        "Color": "Negro",
-        "Talle": "L",
-        "Precio": 6000,
-        "CantidadStock": 50
-    },
-    {
-        "id": 1,
-        "Nombre": "Remera Classic Oversize",
-        "Color": "Blanco",
-        "Talle": "M",
-        "Precio": 8000,
-        "CantidadStock": 35
-    },
-    {
-        "id": 2,
-        "Nombre": "Remera Estampada Rock",
-        "Color": "Gris Melange",
-        "Talle": "XL",
-        "Precio": 3250,
-        "CantidadStock": 15
-    },
-    {
-        "id": 3,
-        "Nombre": "Remera Deportiva Dry-Fit",
-        "Color": "Azul Francia",
-        "Talle": "S",
-        "Precio": 13000,
-        "CantidadStock": 15
-    },
-    {
-        "id": 4,
-        "Nombre": "Remera Polo Clásica",
-        "Color": "Verde Oliva",
-        "Talle": "XXL",
-        "Precio": 13000,
-        "CantidadStock": 10
-    }
-]
+pedidos = []
+
+def cargarProductos():
+    try:
+        with open('./productos.json', 'r') as arch:
+            return json.load(arch)
+    except:
+        print("No se pudo cargar productos.json")
+        return []
+
+def guardarProductos():
+    try:
+        with open('./productos.json', 'w') as arch:
+            json.dump(productos_remeras, arch, indent=4, ensure_ascii=False)
+    except:
+        print("No se pudo guardar productos.json")
+
+productos_remeras = cargarProductos()
 
 numeroOrden = 1000
 
@@ -200,6 +176,7 @@ def registrarPedidos():
     print("=" * 30 + "\n")
     
     pedidos.append(pedido)
+    guardarProductos()
 
 def gestionarEstadoDePedido():
     """ 
@@ -324,6 +301,7 @@ def altaProducto():
     prod["Precio"] = int(pedirDatos("Ingrese el precio del nuevo producto: ", '[0-9]'))
     prod["CantidadStock"] = int(pedirDatos("Ingrese la cantidad de stock del nuevo producto: ", '[0-9]'))
     productos_remeras.append(prod)
+    guardarProductos()
 
     res = pedirDatos("¿Desea listar los productos? (si/no): ", '[a-zA-Z]')
     if res == "si":
@@ -341,6 +319,7 @@ def bajaProducto():
     try:
         res = int(pedirDatos("Ingrese el numero del producto correspondiente a la baja: ", '[0-9]'))
         prod_eliminado = productos_remeras.pop(res)
+        guardarProductos()
     except:
         print("No existe un producto con ese número.")
         return
@@ -382,6 +361,7 @@ def modificarProducto():
             elif type(value) == str:
                 nuevoValor = pedirDatos("Ingrese el nuevo valor: ", '[a-zA-Z ]')
                 productos_remeras[res][key] = nuevoValor
+    guardarProductos()
     mostrarProductos()
 
 def procesarUsuarios():
