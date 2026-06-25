@@ -13,7 +13,7 @@
         "Color": "Blanco",
         "Talle": "M",
         "Precio": 8000,
-        "CantidadStock": 35
+        "CantidadStock": 34
     },
     {
         "id": 2,
@@ -29,7 +29,7 @@
         "Color": "Azul Francia",
         "Talle": "S",
         "Precio": 13000,
-        "CantidadStock": 15
+        "CantidadStock": 14
     },
     {
         "id": 4,
@@ -38,5 +38,13 @@
         "Talle": "XXL",
         "Precio": 13000,
         "CantidadStock": 10
+    },
+    {
+        "Id": 5,
+        "Nombre": "Chomba Polo",
+        "Color": "Azul",
+        "Talle": "L",
+        "Precio": 5000,
+        "CantidadStock": 20
     }
 ]
