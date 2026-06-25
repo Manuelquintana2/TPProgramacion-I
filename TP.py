@@ -367,7 +367,7 @@ def modificarProducto():
         return
 
     contador=0
-    for key in producto.items():
+    for key in producto.items(): 
         contador+=1
         print(f'{contador}: {key}')
 
