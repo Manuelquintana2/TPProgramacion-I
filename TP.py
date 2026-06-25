@@ -10,6 +10,10 @@ import json
 pedidos = []
 
 def cargarProductos():
+    """ 
+    Lee el archivo productos.json y devuelve la lista de productos 
+    para trabajar con el catálogo desde el programa.
+    """
     try:
         with open('./productos.json', 'r') as arch:
             return json.load(arch)
@@ -18,6 +22,10 @@ def cargarProductos():
         return []
 
 def guardarProductos():
+    """ 
+    Guarda la lista actual de productos_remeras en productos.json 
+    para conservar los cambios realizados en el catálogo.
+    """
     try:
         with open('./productos.json', 'w') as arch:
             json.dump(productos_remeras, arch, indent=4, ensure_ascii=False)
@@ -62,6 +70,10 @@ def validaciones(patron,valor):
     return valor
 
 def contadorSalida(numero):
+    """ 
+    Realiza una cuenta regresiva recursiva desde el número recibido 
+    hasta llegar a cero.
+    """
     if numero == 0:
         return
     print(numero)
@@ -365,6 +377,10 @@ def modificarProducto():
     mostrarProductos()
 
 def procesarUsuarios():
+    """ 
+    Lee el archivo usuarios.txt, separa los datos de cada usuario 
+    y los guarda en una matriz para poder validar el acceso.
+    """
     matriz = []
     try:
         with open('./usuarios.txt', 'r') as arch:
@@ -381,8 +397,12 @@ def procesarUsuarios():
     except:
         print("Archivo no encontrado")
         return matriz
-            
+
 def login(email, contrasenia):
+    """ 
+    Busca un usuario por email y contraseña dentro de la matriz 
+    generada desde usuarios.txt para permitir el ingreso al sistema.
+    """
     usuarios = procesarUsuarios()
     for i in usuarios:
         if i[1] == email and i[2] == contrasenia:
@@ -392,6 +412,10 @@ def login(email, contrasenia):
     return None
 
 def altaUsuarios(nombre,email,contrasenia,rol):
+    """ 
+    Registra un nuevo usuario agregando sus datos al archivo 
+    usuarios.txt con el formato correspondiente.
+    """
     usuario = f'{nombre};{email};{contrasenia};{rol}\n'
     try:
         with open('./usuarios.txt', 'a') as arch:
@@ -400,6 +424,10 @@ def altaUsuarios(nombre,email,contrasenia,rol):
         print("No se encontro el archivo")
     
 def bajaUsuarios(email):
+    """ 
+    Elimina un usuario según su email y reescribe el archivo 
+    usuarios.txt con la lista actualizada.
+    """
     usuarios = procesarUsuarios()
     for i in usuarios:
         if i[1] == email:
