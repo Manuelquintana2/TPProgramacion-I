@@ -498,6 +498,7 @@ def main():
                                     print("Invalido")
                         case 5:
                             print("Saliendo ...")
+                            contadorSalida(5)
                             time.sleep(1)
                             return     
                         case 6:
