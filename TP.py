@@ -13,7 +13,7 @@ def cargarProductos():
     try:
         with open('./productos.json', 'r') as arch:
             return json.load(arch)
-    except:
+    except FileNotFoundError:
         print("No se pudo cargar productos.json")
         return []
 
