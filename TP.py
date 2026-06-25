@@ -412,7 +412,6 @@ def bajaUsuarios(email):
     except FileNotFoundError:
         print("El archivo no se encontro")
             
-bajaUsuarios("rober@gmail.com")
 """El main solamente trabaja llamando a funciones"""
 def main():
     """ 
