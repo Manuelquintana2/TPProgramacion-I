@@ -331,8 +331,13 @@ def bajaProducto():
     muestra un resumen del objeto borrado.
     """
     mostrarProductos()
-    res = int(pedirDatos("Ingrese el numero del producto correspondiente a la baja: ", '[0-9]'))
-    prod_eliminado = productos_remeras.pop(res)
+    try:
+        res = int(pedirDatos("Ingrese el numero del producto correspondiente a la baja: ", '[0-9]'))
+        prod_eliminado = productos_remeras.pop(res)
+    except:
+        print("No existe un producto con ese número.")
+        return
+
     print(f'El producto eliminado fue: \n\
 {prod_eliminado["Nombre"]}\n\
 Talle {prod_eliminado["Talle"]}\n\
@@ -348,19 +353,20 @@ def modificarProducto():
     """
     mostrarProductos()
     res = int(pedirDatos("Ingrese el numero del producto correspondiente a modificar: ", '[0-9]'))
-    for i in range(len(productos_remeras)):
-        if res <= len(productos_remeras):
-            if i == res:
-                contador=0
-                for key in productos_remeras[i].items():
-                    contador+=1
-                    print(f'{contador}: {key}')
-        else:
-            print("Fuera de rango")
-            return
+    try:
+        producto = productos_remeras[res]
+    except:
+        print("Fuera de rango")
+        return
+
+    contador=0
+    for key in producto.items():
+        contador+=1
+        print(f'{contador}: {key}')
+
     clave = int(pedirDatos("Ingrese el numero correspondiente a la propiedad que quieras modificar: ", '[0-9]'))
     contador = 0
-    for key,value in productos_remeras[res].items():
+    for key,value in producto.items():
         contador+=1
         if clave == contador:
             if type(value) == int:
@@ -375,7 +381,7 @@ def procesarUsuarios():
     matriz = []
     try:
         with open('./usuarios.txt', 'r') as arch:
-            for linea in arch.readlines():
+            for linea in arch:
                 if linea.strip().split(';')[0] == "nombre":
                     continue
                 partes = linea.strip().split(';')
@@ -385,8 +391,9 @@ def procesarUsuarios():
                 rol = partes[3]
                 matriz.append([nombre,email,contrasenia,rol])
         return matriz
-    except FileNotFoundError:
+    except:
         print("Archivo no encontrado")
+        return matriz
             
 def login(email, contrasenia):
     usuarios = procesarUsuarios()
@@ -402,7 +409,7 @@ def altaUsuarios(nombre,email,contrasenia,rol):
     try:
         with open('./usuarios.txt', 'a') as arch:
             arch.write(usuario)
-    except FileNotFoundError:
+    except:
         print("No se encontro el archivo")
     
 def bajaUsuarios(email):
@@ -415,7 +422,7 @@ def bajaUsuarios(email):
             arch.write('nombre;email;contrasenia;rol\n')
             for i in usuarios:
                 arch.write(f'{i[0]};{i[1]};{i[2]};{i[3]}\n')
-    except FileNotFoundError:
+    except:
         print("El archivo no se encontro")
             
 bajaUsuarios("rober@gmail.com")
@@ -563,7 +570,7 @@ def main():
                             break     
                         case _:
                             print("Invalido")
-    except KeyboardInterrupt:
+    except:
         print("Saliendo...")
         
 main()
