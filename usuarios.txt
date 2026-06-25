@@ -2,4 +2,3 @@ nombre;email;contrasenia;rol
 manuel;manu@gmail.com;hola123;administrador
 mauro;mauro@gmail.com;hola123;supervisor
 juan;juan@gmail.com;hola123;empleado
-ebra;ebra@gmail.com;hola123;empleado

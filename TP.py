@@ -64,7 +64,7 @@ productos_remeras = cargarProductos()
 pedidos = cargarPedidos()
 
 """ Inicializa el número de orden base """
-numeroOrden = 1000
+numeroOrden = 1003
 
 def generarNumeroOrden():
 

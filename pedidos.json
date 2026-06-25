@@ -33,7 +33,7 @@
         ],
         "NroDeOrden": 1001,
         "Estado": "Empaquetado",
-        "MetodoDeEnvio": "Envío express"
+        "MetodoDeEnvio": "Envï¿½o express"
     },
     {
         "Cliente": "SDAS",
@@ -46,7 +46,7 @@
                 "PrecioTotal": 6000
             }
         ],
-        "NroDeOrden": 1000,
+        "NroDeOrden": 1002,
         "Estado": "Pagado",
         "MetodoDeEnvio": "Retiro en sucursal"
     }
