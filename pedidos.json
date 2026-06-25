@@ -1,0 +1,53 @@
+[
+    {
+        "Cliente": "ABUDABI",
+        "Direccion": "ALSINA 1089",
+        "Items": [
+            {
+                "Producto": "Remera Classic Oversize",
+                "PrecioUnitario": 8000,
+                "Cantidad": 1,
+                "PrecioTotal": 8000
+            }
+        ],
+        "NroDeOrden": 1000,
+        "Estado": "Enviado",
+        "MetodoDeEnvio": "Retiro en sucursal"
+    },
+    {
+        "Cliente": "OTRO",
+        "Direccion": "OTRA",
+        "Items": [
+            {
+                "Producto": "Remera Estampada Rock",
+                "PrecioUnitario": 3250,
+                "Cantidad": 4,
+                "PrecioTotal": 13000
+            },
+            {
+                "Producto": "Remera Estampada Rock",
+                "PrecioUnitario": 3250,
+                "Cantidad": 1,
+                "PrecioTotal": 3250
+            }
+        ],
+        "NroDeOrden": 1001,
+        "Estado": "Empaquetado",
+        "MetodoDeEnvio": "Envío express"
+    },
+    {
+        "Cliente": "SDAS",
+        "Direccion": "DSA",
+        "Items": [
+            {
+                "Producto": "Remera Basic Oversize",
+                "PrecioUnitario": 6000,
+                "Cantidad": 1,
+                "PrecioTotal": 6000
+            }
+        ],
+        "NroDeOrden": 1000,
+        "Estado": "Pagado",
+        "MetodoDeEnvio": "Retiro en sucursal"
+    }
+]
