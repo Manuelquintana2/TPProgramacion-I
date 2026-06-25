@@ -38,13 +38,5 @@
         "Talle": "XXL",
         "Precio": 13000,
         "CantidadStock": 10
-    },
-    {
-        "Id": 5,
-        "Nombre": "Chomba Polo",
-        "Color": "Azul",
-        "Talle": "L",
-        "Precio": 5000,
-        "CantidadStock": 20
     }
 ]
