@@ -438,22 +438,15 @@ def main():
             match(usuario[3]):
                 case "administrador":
                     res = pedirDatos(
-
-                    "¿Que operación deseas realizar?\n"
-
-                    "1: Registrar Compra \n"
-
-                    "2: Gestionar estado de pedido\n"
-
-                    "3: Consultar informacion Historica\n"
-
-                    "4: Dar de Alta/Baja o Modificar un producto\n"
-
-                    "5: Salir\n",
-
-                    '^[1-5]$'
-
-                )
+                        "¿Que operación deseas realizar?\n"
+                        "1: Registrar Compra \n"
+                        "2: Gestionar estado de pedido\n"
+                        "3: Consultar informacion Historica\n"
+                        "4: Dar de Alta/Baja o Modificar un producto\n"
+                        "5: Salir\n"
+                        "6: Dar de Alta/Baja un usuario\n",
+                        '^[1-6]$'
+                    )
                     res = int(res)
                     match(res):
                         case 1:
@@ -468,13 +461,9 @@ def main():
                         case 4:
                             subopcion = int(pedirDatos(
                             "¿Que operacion desea hacer?\n"
-
                             "1: Alta\n"
-
                             "2: Baja\n"
-
                             "3: Modificar\n",
-
                             '[1-3]'
                             ))
                             match(subopcion):
@@ -489,7 +478,24 @@ def main():
                         case 5:
                             print("Saliendo ...")
                             time.sleep(1)
-                            break     
+                            return     
+                        case 6:
+                            subopcion_usuario = int(pedirDatos(
+                                "¿Que operacion desea hacer?\n"
+                                "1: Dar de alta un usuario\n"
+                                "2: Dar de baja un usuario\n",
+                                '^[1-2]$'
+                            ))
+                            match(subopcion_usuario):
+                                case 1:
+                                    nombre = pedirDatos("Ingrese el nombre del empleado: ", '^[a-zA-Z ]+$')
+                                    email = pedirDatos("Ingrese el email: ", '^.+$')
+                                    contrasenia = pedirDatos("Ingrese la contraseña: ", '^.+$')
+                                    rol = pedirDatos("Ingrese el rol: ", '^[a-zA-Z]+$')
+                                    altaUsuarios(nombre, email, contrasenia, rol)
+                                case 2:
+                                    email = pedirDatos("Ingrese el email del empleado que vas a dar de baja: ", '^.+$')
+                                    bajaUsuarios(email)
                         case _:
                             print("Invalido")
                             
