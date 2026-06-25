@@ -320,7 +320,7 @@ def bajaProducto():
         res = int(pedirDatos("Ingrese el numero del producto correspondiente a la baja: ", '[0-9]'))
         prod_eliminado = productos_remeras.pop(res)
         guardarProductos()
-    except:
+    except IndexError:
         print("No existe un producto con ese número.")
         return
 
