@@ -9,9 +9,6 @@ incluyendo la carga de productos comprados, cantidades,
 métodos de envío y el seguimiento del estado de cada orden.
 """
 
-""" Lista global para almacenar los pedidos en memoria """
-pedidos = []
-
 def cargarProductos():
     """ 
     Lee el archivo productos.json y devuelve la lista de productos 
@@ -64,20 +61,17 @@ productos_remeras = cargarProductos()
 pedidos = cargarPedidos()
 
 """ Inicializa el número de orden base """
-numeroOrden = 1000
-
 def generarNumeroOrden():
-
+    numeroOrden = 1000
     """ 
     Administra la variable global numeroOrden para asignar un ID único 
     y correlativo a cada nuevo pedido.
     """
     """ Llama a la variable global definida arriba """
-    global numeroOrden
-    orden = numeroOrden
+    for i in pedidos:
+        numeroOrden = i["NroDeOrden"]
     """ Incrementa el contador para el próximo pedido """
-    numeroOrden += 1
-    return orden
+    return numeroOrden+1
 
 def pedirDatos(mensaje, patron):
 
