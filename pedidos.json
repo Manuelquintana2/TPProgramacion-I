@@ -49,5 +49,20 @@
         "NroDeOrden": 1002,
         "Estado": "Pagado",
         "MetodoDeEnvio": "Retiro en sucursal"
+    },
+    {
+        "Cliente": "AA",
+        "Direccion": "GD",
+        "Items": [
+            {
+                "Producto": "Remera Deportiva Dry-Fit",
+                "PrecioUnitario": 13000,
+                "Cantidad": 2,
+                "PrecioTotal": 26000
+            }
+        ],
+        "NroDeOrden": 1003,
+        "Estado": "Pagado",
+        "MetodoDeEnvio": "Retiro en sucursal"
     }
 ]
