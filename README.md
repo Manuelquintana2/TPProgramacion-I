@@ -1,3 +1,3 @@
-# 🚗 Sistema de Estacionamiento v1.0
+# Sistema de Ecommerce de ropa
 
-Sistema integral de gestión de estacionamientos diseñado para optimizar el control de ingresos, y asignación automática de espacios.
+Sistema integral de gestión de compras de prendas diseñado para optimizar el control de pedidos

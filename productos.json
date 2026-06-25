@@ -5,7 +5,7 @@
         "Color": "Negro",
         "Talle": "L",
         "Precio": 6000,
-        "CantidadStock": 50
+        "CantidadStock": 49
     },
     {
         "id": 1,
@@ -13,7 +13,7 @@
         "Color": "Blanco",
         "Talle": "M",
         "Precio": 8000,
-        "CantidadStock": 35
+        "CantidadStock": 33
     },
     {
         "id": 2,
@@ -21,7 +21,7 @@
         "Color": "Gris Melange",
         "Talle": "XL",
         "Precio": 3250,
-        "CantidadStock": 15
+        "CantidadStock": 10
     },
     {
         "id": 3,
@@ -29,7 +29,7 @@
         "Color": "Azul Francia",
         "Talle": "S",
         "Precio": 13000,
-        "CantidadStock": 15
+        "CantidadStock": 14
     },
     {
         "id": 4,

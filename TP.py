@@ -1,72 +1,77 @@
 import time
 import re
+import json
 
 # Descripción del sistema
 # El sistema está hecho para gestionar pedidos de un e-commerce,
 # incluyendo la carga de productos comprados, cantidades, 
 # métodos de envío y el seguimiento del estado de cada orden.
 
-pedidos = [] 
-productos_remeras = [
-    {
-        "id": 0,
-        "Nombre": "Remera Basic Oversize",
-        "Color": "Negro",
-        "Talle": "L",
-        "Precio": 6000,
-        "CantidadStock": 50
-    },
-    {
-        "id": 1,
-        "Nombre": "Remera Classic Oversize",
-        "Color": "Blanco",
-        "Talle": "M",
-        "Precio": 8000,
-        "CantidadStock": 35
-    },
-    {
-        "id": 2,
-        "Nombre": "Remera Estampada Rock",
-        "Color": "Gris Melange",
-        "Talle": "XL",
-        "Precio": 3250,
-        "CantidadStock": 15
-    },
-    {
-        "id": 3,
-        "Nombre": "Remera Deportiva Dry-Fit",
-        "Color": "Azul Francia",
-        "Talle": "S",
-        "Precio": 13000,
-        "CantidadStock": 15
-    },
-    {
-        "id": 4,
-        "Nombre": "Remera Polo Clásica",
-        "Color": "Verde Oliva",
-        "Talle": "XXL",
-        "Precio": 13000,
-        "CantidadStock": 10
-    }
-]
+pedidos = []
 
+def cargarProductos():
+    """ 
+    Lee el archivo productos.json y devuelve la lista de productos 
+    para trabajar con el catálogo desde el programa.
+    """
+    try:
+        with open('TPProgramacion-I/productos.json', 'r') as arch:
+            return json.load(arch)
+    except FileNotFoundError:
+        print("No se pudo cargar productos.json")
+        return []
+
+def cargarPedidos():
+    try:
+        with open('./pedidos.json', 'r') as arch:
+            return json.load(arch)
+    except FileNotFoundError:
+        print("No se pudo cargar pedidos.json")
+        return []
+    
+def guardarProductos():
+    """ 
+    Guarda la lista actual de productos_remeras en productos.json 
+    para conservar los cambios realizados en el catálogo.
+    """
+    try:
+        with open('./productos.json', 'w') as arch:
+            json.dump(productos_remeras, arch, indent=4, ensure_ascii=False)
+    except:
+        print("No se pudo guardar productos.json")
+
+def guardarPedidos():
+    try:
+        with open('./pedidos.json', 'w') as arch:
+            json.dump(pedidos, arch, indent=4, ensure_ascii=False)
+    except:
+        print("No se pudo guardar pedidos.json")
+    
+
+
+productos_remeras = cargarProductos()
+pedidos = cargarPedidos()
 numeroOrden = 1000
 
 def generarNumeroOrden():
+
     """ 
     Administra la variable global numeroOrden para asignar un ID único 
     y correlativo a cada nuevo pedido.
     """
+
     global numeroOrden
     orden = numeroOrden
     numeroOrden += 1
     return orden
 
 def pedirDatos(mensaje, patron):
+
     """ 
     Solicita una entrada al usuario y delega la validación 
     de la misma mediante una expresión regular.
     """
+    
     dato = input(mensaje)
     res = validaciones(patron, dato)
     return res
@@ -80,6 +85,17 @@ def validaciones(patron,valor):
         print('No valido')
         valor = input('Ingrese nuevamente: ')
     return valor
+
+def contadorSalida(numero):
+    """ 
+    Realiza una cuenta regresiva recursiva desde el número recibido 
+    hasta llegar a cero.
+    """
+    if numero == 0:
+        return
+    print(numero)
+    time.sleep(1)
+    contadorSalida(numero - 1)
 
 def mostrarProductos():
     """ 
@@ -189,6 +205,11 @@ def registrarPedidos():
     print("=" * 30 + "\n")
     
     pedidos.append(pedido)
+    guardarProductos()
+    guardarPedidos()
+            
+    input("Presione cualquier tecla para continuar...")
+
 
 def gestionarEstadoDePedido():
     """ 
@@ -258,6 +279,7 @@ def gestionarEstadoDePedido():
             print("¡Éxito! El pedido ha sido marcado como Reenviado.")
     else:
         print("El pedido tiene un estado desconocido o ya finalizó su ciclo.")
+    guardarPedidos()
 
 def consultarInformacionHistorica():
     """ 
@@ -297,12 +319,15 @@ def consultarInformacionHistorica():
             print(f" - {item['Producto']} | Cantidad: {item['Cantidad']} | Subtotal: ${item['PrecioTotal']}")
 
         print("-" * 50)
+        input("Presione cualquier tecla para continuar...")
 
 def altaProducto():
+
     """ 
     Registra un nuevo producto en el catálogo solicitando sus atributos 
     e incrementando el tamaño de productos_remeras.
     """
+
     prod = {}
     prod["Id"] = len(productos_remeras)
     prod["Nombre"] = pedirDatos("Ingrese el nombre del nuevo producto: ", '[a-zA-Z]')
@@ -311,6 +336,7 @@ def altaProducto():
     prod["Precio"] = int(pedirDatos("Ingrese el precio del nuevo producto: ", '[0-9]'))
     prod["CantidadStock"] = int(pedirDatos("Ingrese la cantidad de stock del nuevo producto: ", '[0-9]'))
     productos_remeras.append(prod)
+    guardarProductos()
 
     res = pedirDatos("¿Desea listar los productos? (si/no): ", '[a-zA-Z]')
     if res == "si":
@@ -328,7 +354,8 @@ def bajaProducto():
     try:
         res = int(pedirDatos("Ingrese el numero del producto correspondiente a la baja: ", '[0-9]'))
         prod_eliminado = productos_remeras.pop(res)
-    except:
+        guardarProductos()
+    except IndexError:
         print("No existe un producto con ese número.")
         return
 
@@ -354,7 +381,7 @@ def modificarProducto():
         return
 
     contador=0
-    for key in producto.items():
+    for key in producto.items(): 
         contador+=1
         print(f'{contador}: {key}')
 
@@ -369,27 +396,32 @@ def modificarProducto():
             elif type(value) == str:
                 nuevoValor = pedirDatos("Ingrese el nuevo valor: ", '[a-zA-Z ]')
                 productos_remeras[res][key] = nuevoValor
+    guardarProductos()
     mostrarProductos()
 
 def procesarUsuarios():
+    """ 
+    Lee el archivo usuarios.txt, separa los datos de cada usuario 
+    y los guarda en una matriz para poder validar el acceso.
+    """
     matriz = []
     try:
-        with open('./usuarios.txt', 'r') as arch:
+        with open('TPProgramacion-I/usuarios.txt', 'r') as arch:
             for linea in arch:
                 if linea.strip().split(';')[0] == "nombre":
                     continue
                 partes = linea.strip().split(';')
-                nombre = partes[0]
-                email = partes[1]
-                contrasenia = partes[2]
-                rol = partes[3]
-                matriz.append([nombre,email,contrasenia,rol])
+                matriz.append(partes)
         return matriz
     except:
         print("Archivo no encontrado")
         return matriz
-            
+
 def login(email, contrasenia):
+    """ 
+    Busca un usuario por email y contraseña dentro de la matriz 
+    generada desde usuarios.txt para permitir el ingreso al sistema.
+    """
     usuarios = procesarUsuarios()
     for i in usuarios:
         if i[1] == email and i[2] == contrasenia:
@@ -399,6 +431,10 @@ def login(email, contrasenia):
     return None
 
 def altaUsuarios(nombre,email,contrasenia,rol):
+    """ 
+    Registra un nuevo usuario agregando sus datos al archivo 
+    usuarios.txt con el formato correspondiente.
+    """
     usuario = f'{nombre};{email};{contrasenia};{rol}\n'
     try:
         with open('./usuarios.txt', 'a') as arch:
@@ -407,6 +443,10 @@ def altaUsuarios(nombre,email,contrasenia,rol):
         print("No se encontro el archivo")
     
 def bajaUsuarios(email):
+    """ 
+    Elimina un usuario según su email y reescribe el archivo 
+    usuarios.txt con la lista actualizada.
+    """
     usuarios = procesarUsuarios()
     for i in usuarios:
         if i[1] == email:
@@ -419,7 +459,6 @@ def bajaUsuarios(email):
     except:
         print("El archivo no se encontro")
             
-bajaUsuarios("rober@gmail.com")
 """El main solamente trabaja llamando a funciones"""
 def main():
     """ 
@@ -477,6 +516,7 @@ def main():
                                     print("Invalido")
                         case 5:
                             print("Saliendo ...")
+                            contadorSalida(5)
                             time.sleep(1)
                             return     
                         case 6:
@@ -532,7 +572,7 @@ def main():
                             modificarProducto()
                         case 5:    
                             print("Saliendo ...")
-                            time.sleep(1)
+                            contadorSalida(5)
                             break     
                         case _:
                             print("Invalido")
@@ -566,11 +606,12 @@ def main():
                             consultarInformacionHistorica()
                         case 4:
                             print("Saliendo ...")
-                            time.sleep(1)
+                            contadorSalida(5)
                             break     
                         case _:
                             print("Invalido")
     except:
         print("Saliendo...")
+        contadorSalida(5)
         
 main()
