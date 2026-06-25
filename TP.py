@@ -535,7 +535,7 @@ def main():
                                     altaUsuarios(nombre, email, contrasenia, rol)
                                 case 2:
                                     email = pedirDatos("Ingrese el email del empleado que vas a dar de baja: ", '^.+$')
-                                    bajaUsuarios(email)     
+                                    bajaUsuarios(email)
                         case _:
                             print("Invalido")
                             
