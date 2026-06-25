@@ -15,7 +15,7 @@ def cargarProductos():
     para trabajar con el catálogo desde el programa.
     """
     try:
-        with open('TPProgramacion-I/productos.json', 'r') as arch:
+        with open('./productos.json', 'r') as arch:
             return json.load(arch)
     except FileNotFoundError:
         print("No se pudo cargar productos.json")
@@ -406,7 +406,7 @@ def procesarUsuarios():
     """
     matriz = []
     try:
-        with open('TPProgramacion-I/usuarios.txt', 'r') as arch:
+        with open('./usuarios.txt', 'r') as arch:
             for linea in arch:
                 if linea.strip().split(';')[0] == "nombre":
                     continue

@@ -11,7 +11,7 @@
             }
         ],
         "NroDeOrden": 1000,
-        "Estado": "Enviado",
+        "Estado": "Reenviado",
         "MetodoDeEnvio": "Retiro en sucursal"
     },
     {
